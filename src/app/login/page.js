@@ -15,7 +15,7 @@ export default function Login() {
   return (
     <div className={styles.container}>
       <form className={styles.form} onSubmit={handleSubmit}>
-        <h1 className={styles.title}>เข้าสู่ระบบ WebPawMatch</h1>
+        <h1 className={styles.title}>Sign in PawMatch</h1>
         <div className={styles.inputGroup}>
           <label htmlFor="email">Email</label>
           <input
@@ -36,7 +36,7 @@ export default function Login() {
             required
           />
         </div>
-        <button type="submit" className={styles.button}>เข้าสู่ระบบ</button>
+        <button type="submit" className={styles.button}>Sign in</button>
       </form>
     </div>
   );
