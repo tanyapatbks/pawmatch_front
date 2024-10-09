@@ -1,1 +1,1 @@
-This web create for demo in class name software_achitecture [2110521] 
+This web create for demo in software_achitecture class [2110521] 
