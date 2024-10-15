@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
 import TopMenu from "@/components/TopMenu";
+import Head from "next/head";
+// import { usePathname } from "next/navigation";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -24,12 +26,14 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  // const pathname = usePathname();
+  // const noNavbarRoutes = ["/auth/login", "/auth/register", "/other-page"];
+
   return (
     <html lang="en">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <TopMenu />
         {children}
       </body>
     </html>
