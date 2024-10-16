@@ -146,7 +146,7 @@ export default async function PetDetailPage({
           name="Read Reviews"
           isShowLeft={true}
           isShowRight={false}
-          pathURL={"pets/" + mockD.pid + "/reviews"}
+          pathURL={params.pid + "/reviews"}
           iconLeft={<MdRateReview />}
         />
       </div>
