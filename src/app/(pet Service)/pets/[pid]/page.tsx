@@ -125,8 +125,8 @@ export default async function PetDetailPage({
         </div>
       </div>
 
-      <div className="px-[64px] py-[32px] grid grid-cols-3 gap-y-[160px] gap-x-[56px]">
-        {mockD.imageURL.map((images) => (
+      <div className="px-[64px] py-[32px] grid grid-cols-3 gap-y-[56px] gap-x-[56px]">
+        {mockD.imageURL.map((images: string) => (
           <div
             key={images}
             className="w-[480px] h-[270px] object-contain rounded-[24px] overflow-hidden ring-[4px] ring-rose-200"
