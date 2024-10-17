@@ -18,7 +18,7 @@ export default function ButtonType2InputFunction({
 }: ButtonType2Props) {
   return (
     <div
-      className="flex flox-row space-x-[8px] px-[24px] py-[8px] justify-center items-center rounded-[32px] bg-rose-600 hover:bg-rose-200 text-[24px]  text-white hover:text-rose-950"
+      className="flex flox-row space-x-[8px] px-[24px] py-[8px] justify-center items-center rounded-[32px] bg-rose-600 hover:bg-rose-100 text-[24px]  text-white hover:text-rose-950"
       onClick={onClick}
     >
       {isShowLeft ? <div className="h-[24px]">{iconLeft}</div> : ""}

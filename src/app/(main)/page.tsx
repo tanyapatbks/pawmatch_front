@@ -14,7 +14,7 @@ export default function Home() {
       <div className="flex justify-center items-center">
         <div className="flex justify-center items-center">
           <ButtonType2InputFunction
-            name="Random Pets"
+            name="Random More Pets"
             isShowLeft={true}
             isShowRight={false}
             iconLeft={<IoDiceOutline size={24} />}
