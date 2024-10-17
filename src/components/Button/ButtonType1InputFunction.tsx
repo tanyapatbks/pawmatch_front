@@ -20,7 +20,7 @@ export default function ButtonType1InputFunction({
   return (
     <div
       onClick={onClick} // Attach onClick handler to the div
-      className="flex flox-row space-x-[8px] px-[24px] py-[8px] justify-center items-center rounded-[32px] text-[24px] bg-white border-[2.5px] border-rose-600 hover:bg-rose-200 hover:border-[0px] cursor-pointer"
+      className="flex flox-row space-x-[8px] px-[24px] py-[8px] justify-center items-center rounded-[32px] text-[24px] bg-white border-[2.5px] border-rose-600 hover:bg-rose-200 hover:border-transparent cursor-pointer"
     >
       {isShowLeft ? <div className="h-[24px]">{iconLeft}</div> : null}
       <div className="">{name}</div>

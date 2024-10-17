@@ -9,9 +9,9 @@ import { FaRegHeart } from "react-icons/fa";
 
 export default function TopMenu() {
   return (
-    <div className="w-full bg-white flex flex-col justify-between ">
+    <div className="w-full bg-white flex flex-col">
       <AppName />
-      <div className="flex justify-between px-[72px] py-[24px] h-auto border-b-[2.5px]">
+      <div className="flex justify-between px-[160px] py-[24px] h-auto border-b-[2.5px] border-rose-900">
         <TopMenuItem text="Profile" href="/profile">
           <RiAccountCircleLine size={24} color="rgb(136 19 55)" />
         </TopMenuItem>
