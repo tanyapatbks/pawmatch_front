@@ -1,4 +1,4 @@
-// src/app/(user Service)/profile/page.tsx
+
 "use client";
 
 import { useEffect, useState } from 'react';
@@ -7,7 +7,7 @@ import { useRouter } from 'next/navigation';
 interface UserProfile {
   name: string;
   email: string;
-  // เพิ่ม fields อื่นๆ ตามที่ต้องการ
+
 }
 
 export default function ProfilePage() {
@@ -15,7 +15,7 @@ export default function ProfilePage() {
   const [profile, setProfile] = useState<UserProfile | null>(null);
 
   useEffect(() => {
-    // fetch ข้อมูล profile จาก API
+
     const fetchProfile = async () => {
       try {
         const response = await fetch('/api/user/profile');
@@ -23,7 +23,7 @@ export default function ProfilePage() {
           const data = await response.json();
           setProfile(data);
         } else {
-          // ถ้าไม่มีสิทธิ์เข้าถึง redirect ไปหน้า login
+
           router.push('/auth/login');
         }
       } catch (error) {
@@ -50,7 +50,7 @@ export default function ProfilePage() {
           <h2 className="text-lg font-semibold">Email</h2>
           <p>{profile.email}</p>
         </div>
-        {/* เพิ่มข้อมูลอื่นๆ ที่ต้องการแสดง */}
+
       </div>
     </div>
   );

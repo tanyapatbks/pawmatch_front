@@ -1,4 +1,4 @@
-// src/app/(user Service)/auth/register/page.tsx
+
 "use client";
 
 import { useState, FormEvent } from "react";
@@ -41,13 +41,11 @@ export default function Register() {
     
     if (type === 'file' && files) {
       const file = files[0];
-      // Update form data with file
       setFormData(prev => ({
         ...prev,
         [name]: file
       }));
-      
-      // Create preview URL
+
       if (file) {
         const reader = new FileReader();
         reader.onloadend = () => {
@@ -76,8 +74,7 @@ export default function Register() {
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setError("");
-    
-    // Validation
+
     if (formData.password !== formData.confirmPassword) {
       setError("Passwords do not match");
       return;
@@ -86,7 +83,6 @@ export default function Register() {
     setIsLoading(true);
 
     try {
-      // Create FormData for file upload
       const submitData = new FormData();
       Object.keys(formData).forEach(key => {
         if (key !== 'confirmPassword' && key !== 'profileImage') {

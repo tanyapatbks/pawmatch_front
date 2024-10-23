@@ -1,10 +1,9 @@
-/* src/app/(user Service)/auth/register/register.module.css */
 
 .container {
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: calc(100vh - 140px); /* ปรับความสูงตาม header + nav */
+  min-height: calc(100vh - 140px); 
   padding: 2rem 1rem;
   background-color: #f5f5f5;
 }
@@ -116,9 +115,6 @@
   color: #ef4444;
   text-decoration: underline;
 }
-
-/* src/app/(user Service)/auth/register/register.module.css */
-/* ... previous styles remain the same ... */
 
 .profileImageContainer {
   display: flex;
