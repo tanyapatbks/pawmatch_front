@@ -1,5 +1,6 @@
 // src/app/(user Service)/auth/layout.tsx
-import TopMenu from "@/components/TopMenu";
+// import TopMenu from "@/components/TopMenu";
+import TopMenuNoNavBar from "@/components/TopMenuNoNavBar";
 
 export default function AuthLayout({
   children,
@@ -8,7 +9,7 @@ export default function AuthLayout({
 }) {
   return (
     <div className="space-y-[24px] bg-white">
-      <TopMenu />
+      <TopMenuNoNavBar />
       {children}
     </div>
   );
