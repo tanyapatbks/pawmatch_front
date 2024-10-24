@@ -1,8 +1,10 @@
 // src/app/(user Service)/profile/page.tsx
 "use client";
 
-import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+
+import AppName from "@/components/AppName";
 
 interface UserProfile {
   name: string;
@@ -18,16 +20,16 @@ export default function ProfilePage() {
     // fetch ข้อมูล profile จาก API
     const fetchProfile = async () => {
       try {
-        const response = await fetch('/api/user/profile');
+        const response = await fetch("/api/user/profile");
         if (response.ok) {
           const data = await response.json();
           setProfile(data);
         } else {
           // ถ้าไม่มีสิทธิ์เข้าถึง redirect ไปหน้า login
-          router.push('/auth/login');
+          router.push("/auth/login");
         }
       } catch (error) {
-        console.error('Error fetching profile:', error);
+        console.error("Error fetching profile:", error);
       }
     };
 
@@ -35,7 +37,14 @@ export default function ProfilePage() {
   }, [router]);
 
   if (!profile) {
-    return <div>Loading...</div>;
+    return (
+      <div className="flex flex-col">
+        <AppName />
+        <div className="w-screen h-screen flex flex-col justify-center items-center text-[96px] text-rose-500/50">
+          Loading...
+        </div>
+      </div>
+    );
   }
 
   return (
