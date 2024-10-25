@@ -1,34 +1,35 @@
 
 import MyPetCard from "@/components/PetCard/MyPetCard";
+import AddPetCard from "@/components/AddPetCard";
 
 const mockData = [
     {
-        petId: "1",
+        petId: "12345",
         petName: "Snoopy",
         image: "/img/sn-color.jpg",
     },
     {
-        petId: "2",
+        petId: "22345",
         petName: "Tom",
         image: "/img/tom.jpg",
     },
     {
-        petId: "3",
+        petId: "32345",
         petName: "Doraemon",
         image: "/img/doraemon.jpg",
     },
     {
-        petId: "4",
+        petId: "42345",
         petName: "Chiro",
         image: "/img/chiro.jpg",
     },
     {
-        petId: "5",
+        petId: "52345",
         petName: "Courage",
         image: "/img/courage.jpg",
     },
     {
-        petId: "6",
+        petId: "62345",
         petName: "Garfield",
         image: "/img/garfield.jpg",
     }
@@ -43,9 +44,12 @@ export default function MyPet() {
             <div className="w-[1200px] grid grid-cols-4 justify-items-center gap-y-10 pb-10">
                 {
                     myPets.map((pet) => (
-                        <MyPetCard name={pet.petName} imageURL={pet.image} />
+                        <MyPetCard name={pet.petName} petId={pet.petId} imageURL={pet.image} />
                     ))
                 }
+
+                <AddPetCard href="/mypets/register"/>
+
             </div>
         </div>
     );
