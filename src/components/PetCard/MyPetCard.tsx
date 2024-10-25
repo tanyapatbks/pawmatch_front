@@ -1,15 +1,29 @@
+'use client'
 
 import Image from "next/image";
-import ButtonType1 from "../Button/ButtonType1";
 import ButtonType1Small from "../Button/ButtonType1Small";
+import { useRouter } from "next/navigation";
 
 export default function MyPetCard({
     imageURL,
-    name
+    name,
+    petId
 }: {
     imageURL?: string;
     name: string;
+    petId: string;
 }) {
+
+    const router = useRouter();
+    
+    const handleEditPet = () => {
+        router.push(`/mypets/${petId}/edit`);
+    };
+    
+    const handleDeletePet = () => {
+        // TODO: implement pet delete fetching logic
+    }
+
     return (
 
         <div className="w-[250px] h-[300px] rounded-xl bg-white overflow-hidden text-rose-950 shadow-md">
@@ -36,11 +50,11 @@ export default function MyPetCard({
                 <div className="flex space-x-3 text-center font-bold justify-center">
                     <ButtonType1Small
                         name="Edit"
-                        pathURL={"/mypets"}
+                        onClick={handleEditPet}
                     />
                     <ButtonType1Small
                         name="Delete"
-                        pathURL={"/mypets"}
+                        onClick={handleDeletePet}
                     />
                 </div>
 
