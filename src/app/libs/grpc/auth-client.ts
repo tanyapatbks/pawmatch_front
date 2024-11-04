@@ -16,6 +16,22 @@ interface GetProfileResponse {
   profileImage: string;
 }
 
+interface RegisterRequest {
+  email: string;
+  password: string;
+  name: string;
+  surname: string;
+  displayName: string;
+  telephoneNumber?: string;
+  lineId?: string;
+}
+
+interface RegisterResponse {
+  userId: string;
+  token: string;
+  message: string;
+}
+
 const packageDefinition = protoLoader.loadSync(PROTO_PATH, {
   keepCase: true,
   longs: String,
@@ -41,6 +57,23 @@ export const authClient = {
             reject(error);
           } else {
             console.log('gRPC login response:', response);
+            resolve(response);
+          }
+        }
+      );
+    });
+  },
+
+  register: (userData: RegisterRequest): Promise<RegisterResponse> => {
+    return new Promise((resolve, reject) => {
+      client.Register(
+        userData,
+        (error: Error | null, response: RegisterResponse) => {
+          if (error) {
+            console.error('gRPC register error:', error);
+            reject(error);
+          } else {
+            console.log('gRPC register response:', response);
             resolve(response);
           }
         }

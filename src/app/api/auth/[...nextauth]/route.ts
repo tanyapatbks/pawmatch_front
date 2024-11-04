@@ -3,6 +3,7 @@ import { JWT } from "next-auth/jwt";
 import CredentialsProvider from "next-auth/providers/credentials";
 import userLogin from "../../../libs/userLogIn";
 import getUserProfile from "../../../libs/getUserProfile";
+import userRegister from "../../../libs/userRegister";
 
 export const authOptions: AuthOptions = {
     providers: [
@@ -10,15 +11,40 @@ export const authOptions: AuthOptions = {
         name: "Credentials",
         credentials: {
           email: { label: "Email", type: "email" },
-          password: { label: "Password", type: "password" }
+          password: { label: "Password", type: "password" },
+          isRegistering: { type: "boolean", optional: true }, 
+          name: { type: "text", optional: true },
+          surname: { type: "text", optional: true },
+          displayName: { type: "text", optional: true },
+          telephoneNumber: { type: "text", optional: true },
+          lineId: { type: "text", optional: true },
         },
         async authorize(credentials) {
           try {
             if (!credentials?.email || !credentials?.password) {
               throw new Error("Please enter your email and password");
             }
-  
-            const result = await userLogin(credentials.email, credentials.password);
+
+            let result;
+            if (credentials.isRegistering === 'true') {
+              if (!credentials.name || !credentials.surname || !credentials.displayName) {
+                throw new Error("Missing required fields for registration");
+              }
+              
+              result = await userRegister({
+                email: credentials.email,
+                password: credentials.password,
+                name: credentials.name,
+                surname: credentials.surname,
+                displayName: credentials.displayName,
+                telephoneNumber: credentials.telephoneNumber,
+                lineId: credentials.lineId
+              });
+            } else {
+              // Handle normal login
+              result = await userLogin(credentials.email, credentials.password);
+            }
+
             if (!result) {
               throw new Error("Invalid credentials");
             }
@@ -37,8 +63,8 @@ export const authOptions: AuthOptions = {
               profileImage: profile.profileImage,
             };
           } catch (error) {
-            console.error('Login error:', error);
-            throw new Error(error instanceof Error ? error.message : "Login failed");
+            console.error('Authentication error:', error);
+            throw new Error(error instanceof Error ? error.message : "Authentication failed");
           }
         },
       }),
@@ -76,10 +102,9 @@ export const authOptions: AuthOptions = {
         };
       },
     },
-
-  pages: {
-    signIn: '/auth/login',
-  },
+    pages: {
+      signIn: '/auth/login',
+    },
 };
 
 const handler = NextAuth(authOptions);
