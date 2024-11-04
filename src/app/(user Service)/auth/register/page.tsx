@@ -2,9 +2,9 @@
 "use client";
 
 import { useState, FormEvent } from "react";
-import { useRouter } from 'next/navigation';
-import Link from 'next/link';
-import Image from 'next/image';
+import { useRouter } from "next/navigation";
+import Link from "next/link";
+import Image from "next/image";
 import styles from "./register.module.css";
 
 interface RegisterForm {
@@ -22,31 +22,31 @@ interface RegisterForm {
 export default function Register() {
   const router = useRouter();
   const [formData, setFormData] = useState<RegisterForm>({
-    name: '',
-    surname: '',
-    displayName: '',
-    email: '',
-    telephoneNumber: '',
-    lineId: '',
-    password: '',
-    confirmPassword: '',
+    name: "",
+    surname: "",
+    displayName: "",
+    email: "",
+    telephoneNumber: "",
+    lineId: "",
+    password: "",
+    confirmPassword: "",
     profileImage: null,
   });
-  const [previewImage, setPreviewImage] = useState<string>('');
+  const [previewImage, setPreviewImage] = useState<string>("");
   const [error, setError] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value, type, files } = e.target;
-    
-    if (type === 'file' && files) {
+
+    if (type === "file" && files) {
       const file = files[0];
       // Update form data with file
-      setFormData(prev => ({
+      setFormData((prev) => ({
         ...prev,
-        [name]: file
+        [name]: file,
       }));
-      
+
       // Create preview URL
       if (file) {
         const reader = new FileReader();
@@ -55,28 +55,28 @@ export default function Register() {
         };
         reader.readAsDataURL(file);
       } else {
-        setPreviewImage('');
+        setPreviewImage("");
       }
     } else {
-      setFormData(prev => ({
+      setFormData((prev) => ({
         ...prev,
-        [name]: value
+        [name]: value,
       }));
     }
   };
 
   const handleRemoveImage = () => {
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      profileImage: null
+      profileImage: null,
     }));
-    setPreviewImage('');
+    setPreviewImage("");
   };
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setError("");
-    
+
     // Validation
     if (formData.password !== formData.confirmPassword) {
       setError("Passwords do not match");
@@ -88,31 +88,33 @@ export default function Register() {
     try {
       // Create FormData for file upload
       const submitData = new FormData();
-      Object.keys(formData).forEach(key => {
-        if (key !== 'confirmPassword' && key !== 'profileImage') {
+      Object.keys(formData).forEach((key) => {
+        if (key !== "confirmPassword" && key !== "profileImage") {
           submitData.append(key, formData[key as keyof RegisterForm] as string);
         }
       });
       if (formData.profileImage) {
-        submitData.append('profileImage', formData.profileImage);
+        submitData.append("profileImage", formData.profileImage);
       }
 
-      const response = await fetch('/api/auth/register', {
-        method: 'POST',
-        body: submitData
+      const response = await fetch("/api/auth/register", {
+        method: "POST",
+        body: submitData,
       });
 
       const data = await response.json();
 
       if (response.ok) {
         // Registration successful
-        router.push('/auth/login?message=Registration successful! Please log in.');
+        router.push(
+          "/auth/login?message=Registration successful! Please log in."
+        );
       } else {
-        setError(data.message || 'Registration failed');
+        setError(data.message || "Registration failed");
       }
     } catch (err) {
-      setError('An error occurred. Please try again.');
-      console.error('Registration error:', err);
+      setError("An error occurred. Please try again.");
+      console.error("Registration error:", err);
     } finally {
       setIsLoading(false);
     }
@@ -122,7 +124,7 @@ export default function Register() {
     <div className={styles.container}>
       <form className={styles.form} onSubmit={handleSubmit}>
         <h1 className={styles.title}>Create PawMatch Account</h1>
-        
+
         {error && <div className={styles.error}>{error}</div>}
 
         <div className={styles.profileImageContainer}>
@@ -148,10 +150,10 @@ export default function Register() {
               <span>Profile Image</span>
             </div>
           )}
-          
+
           <div className={styles.inputGroup}>
             <label htmlFor="profileImage" className={styles.uploadLabel}>
-              {previewImage ? 'Change Image' : 'Upload Image'}
+              {previewImage ? "Change Image" : "Upload Image"}
             </label>
             <input
               type="file"
@@ -262,13 +264,9 @@ export default function Register() {
             />
           </div>
         </div>
-        
-        <button 
-          type="submit" 
-          className={styles.button}
-          disabled={isLoading}
-        >
-          {isLoading ? 'Creating Account...' : 'Create Account'}
+
+        <button type="submit" className={styles.button} disabled={isLoading}>
+          {isLoading ? "Creating Account..." : "Create Account"}
         </button>
 
         <div className={styles.loginContainer}>
