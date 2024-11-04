@@ -2,15 +2,15 @@
 "use client";
 
 import { useState, FormEvent } from "react";
-import { useSearchParams, useRouter } from 'next/navigation';
-import Link from 'next/link';
+import { useSearchParams, useRouter } from "next/navigation";
+import Link from "next/link";
 import styles from "./login.module.css";
 
 export default function Login() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const returnUrl = searchParams.get('return_url') || '/';
-  
+  const returnUrl = searchParams.get("return_url") || "/";
+
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [error, setError] = useState<string>("");
@@ -22,10 +22,10 @@ export default function Login() {
     setIsLoading(true);
 
     try {
-      const response = await fetch('/api/auth/login', {
-        method: 'POST',
+      const response = await fetch("/api/auth/login", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({ email, password }),
       });
@@ -37,11 +37,11 @@ export default function Login() {
         router.push(decodeURIComponent(returnUrl));
       } else {
         // Login failed
-        setError(data.message || 'Invalid credentials');
+        setError(data.message || "Invalid credentials");
       }
     } catch (err) {
-      setError('An error occurred. Please try again.');
-      console.error('Login error:', err);
+      setError("An error occurred. Please try again.");
+      console.error("Login error:", err);
     } finally {
       setIsLoading(false);
     }
@@ -51,13 +51,9 @@ export default function Login() {
     <div className={styles.container}>
       <form className={styles.form} onSubmit={handleSubmit}>
         <h1 className={styles.title}>Sign in PawMatch</h1>
-        
-        {error && (
-          <div className={styles.error}>
-            {error}
-          </div>
-        )}
-        
+
+        {error && <div className={styles.error}>{error}</div>}
+
         <div className={styles.inputGroup}>
           <label htmlFor="email">Email</label>
           <input
@@ -69,7 +65,7 @@ export default function Login() {
             required
           />
         </div>
-        
+
         <div className={styles.inputGroup}>
           <label htmlFor="password">Password</label>
           <input
@@ -81,13 +77,9 @@ export default function Login() {
             required
           />
         </div>
-        
-        <button 
-          type="submit" 
-          className={styles.button}
-          disabled={isLoading}
-        >
-          {isLoading ? 'Signing in...' : 'Sign in'}
+
+        <button type="submit" className={styles.button} disabled={isLoading}>
+          {isLoading ? "Signing in..." : "Sign in"}
         </button>
 
         <div className={styles.registerContainer}>
