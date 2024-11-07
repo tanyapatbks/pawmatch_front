@@ -1,11 +1,11 @@
-export default async function getPet(pid: string, token: string) {
+export default async function getPet(pid: string) {
   const response = await fetch(
-    `${process.env.NEXT_PUBLIC_API_GATEWAY}/pets/${pid}`,
+    `${process.env.NEXT_PUBLIC_PET_SERVICE}/pets/${pid}`,
     {
       method: "GET",
-      headers: {
-        authorization: `Bearer ${token}`,
-      },
+      // headers: {
+      //   authorization: `Bearer ${token}`,
+      // },
     }
   );
   if (!response.ok) {

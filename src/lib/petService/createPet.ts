@@ -1,7 +1,7 @@
 import PetFullDetail from "@/types/index";
 
 export default async function createPet(token: string, pet: PetFullDetail) {
-  const response = await fetch(`${process.env.NEXT_PUBLIC_API_GATEWAY}/pets`, {
+  const response = await fetch(`${process.env.NEXT_PUBLIC_PET_SERVICE}/pets`, {
     method: "POST",
     headers: {
       authorization: `Bearer ${token}`,

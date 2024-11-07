@@ -6,14 +6,20 @@ import PetRandomFilter from "@/types/index";
   ageTo: number;
   vaccinatedComment: string;
 } */
-export default async function getRandomPets() {
+export default async function getRandomPets(token: string) {
+  console.log(
+    "getRandomPets at",
+    process.env.NEXT_PUBLIC_PET_SERVICE,
+    "/pets/random"
+  );
   const response = await fetch(
-    `${process.env.NEXT_PUBLIC_API_GATEWAY}/pets/random`,
+    //${process.env.NEXT_PUBLIC_PET_SERVICE}
+    `http://localhost:5000/pets/random`,
     {
       method: "GET",
-      //   headers: {
-      //     authorization: `Bearer ${token}`,
-      //   },
+      headers: {
+        authorization: `Bearer ${token}`,
+      },
     }
   );
   if (!response.ok) {

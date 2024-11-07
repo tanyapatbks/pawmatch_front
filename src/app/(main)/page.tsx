@@ -9,7 +9,7 @@ export default function Home() {
     <div className="flex flex-col space-y-[64px]">
       <PageBar name="Home" />
       <div className="flex justify-center">
-        <Show3PetHome />
+        <Show3PetHome token={""} />
       </div>
       <div className="flex justify-center items-center">
         <div className="flex justify-center items-center">
