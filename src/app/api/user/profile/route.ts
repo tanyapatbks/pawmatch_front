@@ -1,27 +1,20 @@
-// src/app/api/user/profile/route.ts
 import { NextResponse } from 'next/server';
-import { getServerSession } from 'next-auth/next';
+import { getServerSession } from 'next-auth';
 import { authOptions } from '@/app/api/auth/[...nextauth]/route';
 import { authClient } from '@/app/libs/grpc/auth-client';
 
 export async function GET(request: Request) {
   try {
     const session = await getServerSession(authOptions);
-    console.log("Session in API route:", session);
-
-    if (!session?.userId) {
+    
+    if (!session?.user?.userId) {
       return new NextResponse(
-        JSON.stringify({ error: 'Unauthorized' }),
-        { 
-          status: 401,
-          headers: { 'Content-Type': 'application/json' }
-        }
+        JSON.stringify({ error: 'Unauthorized' }), 
+        { status: 401 }
       );
     }
 
-    const userId = session.userId;
-    const profile = await authClient.getProfile(userId);
-    console.log("Profile from gRPC:", profile);
+    const profile = await authClient.getProfile(session.user.userId);
 
     return new NextResponse(
       JSON.stringify(profile),
@@ -30,10 +23,13 @@ export async function GET(request: Request) {
         headers: { 'Content-Type': 'application/json' }
       }
     );
+
   } catch (error) {
-    console.error("API Error:", error);
+    console.error('Get profile error:', error);
     return new NextResponse(
-      JSON.stringify({ error: 'Failed to fetch profile' }),
+      JSON.stringify({ 
+        error: error instanceof Error ? error.message : 'Failed to get profile' 
+      }),
       { 
         status: 500,
         headers: { 'Content-Type': 'application/json' }

@@ -1,35 +1,33 @@
-// src/app/libs/grpc/auth-client.ts
 import * as grpc from '@grpc/grpc-js';
 import * as protoLoader from '@grpc/proto-loader';
 import path from 'path';
 
 const PROTO_PATH = path.resolve(process.cwd(), 'src/app/libs/grpc/proto/auth.proto');
 
-interface GetProfileResponse {
+interface UpdateProfileRequest {
   userId: string;
   name: string;
   surname: string;
   displayName: string;
-  email: string;
   telephoneNumber: string;
   lineId: string;
-  profileImage: string;
 }
 
-interface RegisterRequest {
-  email: string;
-  password: string;
+interface UpdateProfileResponse {
+  userId: string;
   name: string;
   surname: string;
   displayName: string;
-  telephoneNumber?: string;
-  lineId?: string;
+  telephoneNumber: string;
+  lineId: string;
 }
 
-interface RegisterResponse {
-  userId: string;
-  token: string;
-  message: string;
+
+export type AuthClient = {
+  login: (userEmail: string, userPassword: string) => Promise<any>;
+  register: (userData: any) => Promise<any>;
+  getProfile: (userId: string) => Promise<any>;
+  updateProfile: (data: UpdateProfileRequest) => Promise<UpdateProfileResponse>;
 }
 
 const packageDefinition = protoLoader.loadSync(PROTO_PATH, {
@@ -46,7 +44,7 @@ const client = new proto.AuthService(
   grpc.credentials.createInsecure()
 );
 
-export const authClient = {
+export const authClient: AuthClient = {
   login: (userEmail: string, userPassword: string) => {
     return new Promise((resolve, reject) => {
       client.Login(
@@ -64,11 +62,11 @@ export const authClient = {
     });
   },
 
-  register: (userData: RegisterRequest): Promise<RegisterResponse> => {
+  register: (userData: any) => {
     return new Promise((resolve, reject) => {
       client.Register(
         userData,
-        (error: Error | null, response: RegisterResponse) => {
+        (error: Error | null, response: any) => {
           if (error) {
             console.error('gRPC register error:', error);
             reject(error);
@@ -81,16 +79,33 @@ export const authClient = {
     });
   },
 
-  getProfile: (userId: string): Promise<GetProfileResponse> => {
+  getProfile: (userId: string) => {
     return new Promise((resolve, reject) => {
       client.GetProfile(
         { userId },
-        (error: Error | null, response: GetProfileResponse) => {
+        (error: Error | null, response: any) => {
           if (error) {
             console.error('gRPC getProfile error:', error);
             reject(error);
           } else {
             console.log('gRPC getProfile response:', response);
+            resolve(response);
+          }
+        }
+      );
+    });
+  },
+
+  updateProfile: (data: UpdateProfileRequest): Promise<UpdateProfileResponse> => {
+    return new Promise((resolve, reject) => {
+      client.UpdateProfile(
+        data,
+        (error: Error | null, response: UpdateProfileResponse) => {
+          if (error) {
+            console.error('gRPC updateProfile error:', error);
+            reject(error);
+          } else {
+            console.log('gRPC updateProfile response:', response);
             resolve(response);
           }
         }
