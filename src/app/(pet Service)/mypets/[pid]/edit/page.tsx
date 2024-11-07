@@ -1,6 +1,6 @@
 
 import PetProfileForm from "@/components/Form/PetProfileForm";
-import PetFullDetail from "@/types";
+import { PetFullDetail } from "@/types";
 
 const mockData = {
     "petId": "12345",

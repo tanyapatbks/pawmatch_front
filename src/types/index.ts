@@ -1,4 +1,4 @@
-export default interface PetFullDetail {
+export interface PetFullDetail {
   petId: string;
   petName: string;
   species: string;

@@ -1,16 +1,25 @@
-import PetFullDetail from "@/types/index";
+"use server"
 
-export default async function createPet(token: string, pet: PetFullDetail) {
-  const response = await fetch(`${process.env.NEXT_PUBLIC_API_GATEWAY}/pets`, {
+import { cookies } from 'next/headers'
+
+export default async function createPet(pet: FormData) {
+  const cookieStore = cookies();
+
+  if (!cookieStore.has('user')) {
+    throw new Error("user token required");
+  }
+
+  const jwt = cookieStore.get('user')?.value;
+  
+  const response = await fetch(`${process.env.API_GATEWAY_URL}/pets`, {
     method: "POST",
     headers: {
-      authorization: `Bearer ${token}`,
-      "Content-Type": "application/json",
+      authorization: `Bearer ${jwt}`
     },
-    body: JSON.stringify(pet),
+    body: pet,
   });
+
   if (!response.ok) {
     throw new Error("Failed to Create Pet");
   }
-  return await response.json();
 }
