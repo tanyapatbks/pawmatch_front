@@ -1,6 +1,7 @@
 
 import MyPetCard from "@/components/PetCard/MyPetCard";
 import AddPetCard from "@/components/AddPetCard";
+import { getMyPets } from "@/lib/petService/getMyPets";
 
 const mockData = [
     {
@@ -35,9 +36,10 @@ const mockData = [
     }
 ]
 
-export default function MyPet() {
+export default async function MyPet() {
     
-    const myPets = mockData;
+    // TODO: replace this with fetching logic
+    const myPets = await getMyPets();
 
     return (
         <div className="w-full flex justify-center">

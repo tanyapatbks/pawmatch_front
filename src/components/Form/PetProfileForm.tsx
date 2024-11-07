@@ -8,7 +8,7 @@ import ButtonType2Med from "../Button/ButtonType2Med";
 import { useState } from "react";
 import { MouseEvent } from 'react';
 import { useRouter } from "next/navigation";
-import { PetFullDetail } from "@/types";
+import PetFullDetail from "@/types";
 
 interface PetProfileField {
   petName: string;
@@ -29,8 +29,8 @@ export default function PetProfileForm({
 
 	const router = useRouter();
 
-    if (initialPetData) console.log(initialPetData)
-    else console.log("No initial")
+    // if (initialPetData) console.log(initialPetData)
+    // else console.log("No initial")
 	
 	const [formData, setFormData] = useState({
 		petName: initialPetData?.petName || "",
