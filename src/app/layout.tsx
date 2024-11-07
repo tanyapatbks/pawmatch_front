@@ -5,6 +5,8 @@ import TopMenu from "@/components/TopMenu";
 import Head from "next/head";
 // import { usePathname } from "next/navigation";
 
+import NextAuthProvider from "@/providers/NextAuthProvider";
+
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
   variable: "--font-geist-sans",
