@@ -4,6 +4,8 @@ import "./globals.css";
 import TopMenu from "@/components/TopMenu";
 import { NextAuthProvider } from "@/components/Providers"; // เพิ่มบรรทัดนี้
 
+import NextAuthProvider from "@/providers/NextAuthProvider";
+
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
   variable: "--font-geist-sans",
