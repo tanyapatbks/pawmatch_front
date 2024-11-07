@@ -4,7 +4,7 @@ import "./globals.css";
 import TopMenu from "@/components/TopMenu";
 import { NextAuthProvider } from "@/components/Providers"; // เพิ่มบรรทัดนี้
 
-import NextAuthProvider from "@/providers/NextAuthProvider";
+// import NextAuthProvider from "@/providers/NextAuthProvider";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -29,10 +29,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-        <NextAuthProvider>
-          {children}
-        </NextAuthProvider>
+      <body
+        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+      >
+        <NextAuthProvider>{children}</NextAuthProvider>
       </body>
     </html>
   );

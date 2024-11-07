@@ -1,9 +1,12 @@
 // src/app/libs/userRegister.ts
-import * as grpc from '@grpc/grpc-js';
-import * as protoLoader from '@grpc/proto-loader';
-import path from 'path';
+import * as grpc from "@grpc/grpc-js";
+import * as protoLoader from "@grpc/proto-loader";
+import path from "path";
 
-const PROTO_PATH = path.resolve(process.cwd(), 'src/app/libs/grpc/proto/auth.proto');
+const PROTO_PATH = path.resolve(
+  process.cwd(),
+  "src/app/libs/grpc/proto/auth.proto"
+);
 
 interface RegisterRequest {
   email: string;
@@ -33,24 +36,26 @@ const packageDefinition = protoLoader.loadSync(PROTO_PATH, {
 
 const proto = (grpc.loadPackageDefinition(packageDefinition) as any).auth;
 const client = new proto.AuthService(
-  '127.0.0.1:50051',
+  "127.0.0.1:50051",
   grpc.credentials.createInsecure()
 );
 
-export default async function userRegister(userData: RegisterRequest): Promise<RegisterResponse> {
+export default async function userRegister(
+  userData: RegisterRequest
+): Promise<RegisterResponse> {
   return new Promise((resolve, reject) => {
-    console.log('Attempting gRPC register:', { email: userData.email });
-    
+    console.log("Attempting gRPC register:", { email: userData.email });
+
     client.Register(
       userData,
       (error: Error | null, response: RegisterResponse) => {
         if (error) {
-          console.error('gRPC register error:', error);
+          console.error("gRPC register error:", error);
           reject(error);
           return;
         }
 
-        console.log('gRPC register response:', response);
+        console.log("gRPC register response:", response);
         resolve(response);
       }
     );

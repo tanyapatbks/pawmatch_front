@@ -4,7 +4,7 @@ import PetCardHome from "./PetCard/PetCardHome";
 import PetFullDetail from "@/types/index";
 import { useEffect, useRef } from "react";
 import { useState } from "react";
-import getRandomPets from "@/lib/petService/getRandomPets";
+import getRandomPets from "@/libs/petService/getRandomPets";
 
 interface PetCardHomeProps {
   success: boolean;
