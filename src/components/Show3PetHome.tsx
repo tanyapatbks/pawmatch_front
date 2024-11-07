@@ -1,6 +1,17 @@
-import PetCardHome from "./PetCard/PetCardHome";
+"use client";
 
-export default function Show3PetHome() {
+import PetCardHome from "./PetCard/PetCardHome";
+import PetFullDetail from "@/types/index";
+import { useEffect, useRef } from "react";
+import { useState } from "react";
+import getRandomPets from "@/lib/petService/getRandomPets";
+
+interface PetCardHomeProps {
+  success: boolean;
+  data: PetFullDetail[];
+}
+
+export default function Show3PetHome({ token }: { token: string }) {
   /*
     imageURL: string;
   name: string;
@@ -36,6 +47,27 @@ export default function Show3PetHome() {
       age: 5,
     },
   ];
+
+  const [randomPetsData, setRandomPetsData] = useState<PetFullDetail[]>([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const randomPets = await getRandomPets(token);
+      setRandomPetsData(randomPets.data);
+    };
+    fetchData();
+  }, [randomPetsData]);
+
+  const handleNewRandom = () => {
+    const fetchData = async () => {
+      const randomPets = await getRandomPets(token);
+      setRandomPetsData(randomPets.data);
+    };
+    fetchData();
+  };
+
+  // const randomPets = await getRandomPets();
+  // const randomPetsData = await randomPets.data;
   return (
     <div className="space-x-[64px] flex flex-row items-start">
       {mockData.map((pet) => (

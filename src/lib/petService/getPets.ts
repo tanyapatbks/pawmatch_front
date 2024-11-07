@@ -1,5 +1,5 @@
 export default async function getPets(token: string) {
-  const response = await fetch(`${process.env.NEXT_PUBLIC_API_GATEWAY}/pets`, {
+  const response = await fetch(`${process.env.NEXT_PUBLIC_PET_SERVICE}/pets`, {
     method: "GET",
     headers: {
       authorization: `Bearer ${token}`,
