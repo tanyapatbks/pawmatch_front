@@ -20,7 +20,7 @@ export default function PetCardHome({
   return (
     <div className="w-[320px] h-auto rounded-[24px] space-y-[16px] bg-white overflow-hidden text-rose-950 shadow-md">
       {noImage ? (
-        <div className="w-full h-[208px] bg-rose-600"> </div>
+        <div className="w-full h-[208px] bg-rose-200"> </div>
       ) : (
         <div className="object-contain h-[208px] w-full">
           <Image

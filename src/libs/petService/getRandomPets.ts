@@ -6,7 +6,7 @@ import PetRandomFilter from "@/types/index";
   ageTo: number;
   vaccinatedComment: string;
 } */
-export default async function getRandomPets(token: string) {
+export default async function getRandomPets() {
   console.log(
     "getRandomPets at",
     process.env.NEXT_PUBLIC_PET_SERVICE,
@@ -14,12 +14,12 @@ export default async function getRandomPets(token: string) {
   );
   const response = await fetch(
     //${process.env.NEXT_PUBLIC_PET_SERVICE}
-    `http://localhost:5000/pets/random`,
+    `${process.env.NEXT_PUBLIC_PET_SERVICE}/pets/random`,
     {
       method: "GET",
-      headers: {
-        authorization: `Bearer ${token}`,
-      },
+      // headers: {
+      //   authorization: `Bearer ${token}`,
+      // },
     }
   );
   if (!response.ok) {

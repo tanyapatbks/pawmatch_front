@@ -2,21 +2,41 @@
 
 import PetCardHome from "./PetCard/PetCardHome";
 import PetFullDetail from "@/types/index";
-import { useEffect, useRef } from "react";
+import PetFullDetailM2 from "@/types/index";
+import { useEffect } from "react";
 import { useState } from "react";
 import getRandomPets from "@/libs/petService/getRandomPets";
+
+import ButtonType2InputFunction from "./Button/ButtonType2InputFunction";
+import { IoDiceOutline } from "react-icons/io5";
 
 interface PetCardHomeProps {
   success: boolean;
   data: PetFullDetail[];
 }
 
-export default function Show3PetHome({ token }: { token: string }) {
+export default function Show3PetHome() {
   /*
     imageURL: string;
   name: string;
   description: string;
   petDetailPath: string; */
+  // const { data: session, status } = useSession();
+  // if (status === "loading") {
+  //   return <div>Loading...</div>;
+  // }
+
+  // if (!session) {
+  //   return <div>No session</div>;
+  // }
+
+  // if (!session.accessToken) {
+  //   return <div>No session accessToken</div>;
+  // }
+
+  // // Since session.accessToken exists, we can assign it directly
+  // const token = session.accessToken;
+
   let mockData = [
     {
       pid: "001",
@@ -48,19 +68,28 @@ export default function Show3PetHome({ token }: { token: string }) {
     },
   ];
 
-  const [randomPetsData, setRandomPetsData] = useState<PetFullDetail[]>([]);
+  const [randomPetsData, setRandomPetsData] = useState<PetFullDetailM2[]>([]);
+
+  console.log("==================================");
+  for (let i = 0; i < randomPetsData.length; i++) {
+    console.log(randomPetsData[i].petId);
+    console.log(randomPetsData[i].image[0]);
+  }
 
   useEffect(() => {
     const fetchData = async () => {
-      const randomPets = await getRandomPets(token);
+      const randomPets = await getRandomPets();
       setRandomPetsData(randomPets.data);
     };
     fetchData();
-  }, [randomPetsData]);
+  }, []);
 
   const handleNewRandom = () => {
     const fetchData = async () => {
-      const randomPets = await getRandomPets(token);
+      const randomPets = await getRandomPets();
+      for (let i = 0; i < randomPets.data.length; i++) {
+        console.log(`new qurry ${i}`, randomPets.data[i].petId);
+      }
       setRandomPetsData(randomPets.data);
     };
     fetchData();
@@ -68,19 +97,39 @@ export default function Show3PetHome({ token }: { token: string }) {
 
   // const randomPets = await getRandomPets();
   // const randomPetsData = await randomPets.data;
+  if (!randomPetsData) {
+    return (
+      <div className="flex flex-col justify-center items-center text-[80px] font-bold">
+        Loading...
+      </div>
+    );
+  }
   return (
-    <div className="space-x-[64px] flex flex-row items-start">
-      {mockData.map((pet) => (
-        <PetCardHome
-          key={pet.pid}
-          imageURL={pet.imageURL}
-          name={pet.name}
-          gender={pet.gender}
-          age={pet.age}
-          description={pet.description}
-          petDetailPath={"pets/" + pet.pid}
-        />
-      ))}
+    <div className="flex flex-col space-y-[64px]">
+      <div className="space-x-[64px] flex flex-row items-start">
+        {randomPetsData.map((pet: PetFullDetailM2) => (
+          <PetCardHome
+            key={pet.petId}
+            imageURL={pet.image[0] ? pet.image[0] : ""}
+            name={pet.petName}
+            gender={pet.gender}
+            age={pet.age}
+            description={pet.behaviorDescription}
+            petDetailPath={"pets/" + pet.petId}
+          />
+        ))}
+      </div>
+      <div className="flex justify-center items-center">
+        <div className="flex justify-center items-center">
+          <ButtonType2InputFunction
+            name="Random More Pets"
+            isShowLeft={true}
+            isShowRight={false}
+            iconLeft={<IoDiceOutline size={24} />}
+            onClick={() => handleNewRandom()}
+          />
+        </div>
+      </div>
     </div>
   );
 }
