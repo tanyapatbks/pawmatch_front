@@ -1,8 +1,9 @@
 "use server"
 
 import { cookies } from 'next/headers'
+import { revalidatePath } from 'next/cache';
 
-export default async function createPet(pet: FormData) {
+export default async function updatePet(petId: string, pet: FormData) {
   const cookieStore = cookies();
 
   if (!cookieStore.has('user')) {
@@ -10,9 +11,9 @@ export default async function createPet(pet: FormData) {
   }
 
   const jwt = cookieStore.get('user')?.value;
-  
-  const response = await fetch(`${process.env.API_GATEWAY_URL}/pets`, {
-    method: "POST",
+
+  const response = await fetch(`${process.env.API_GATEWAY_URL}/pets/${petId}`, {
+    method: "PUT",
     headers: {
       authorization: `Bearer ${jwt}`
     },
@@ -20,6 +21,8 @@ export default async function createPet(pet: FormData) {
   });
 
   if (!response.ok) {
-    throw new Error("Failed to Create Pet");
+    throw new Error("Failed to Update Pet");
   }
+
+  revalidatePath('/mypets/[pid]/edit', 'page')
 }
