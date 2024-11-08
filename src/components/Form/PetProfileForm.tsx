@@ -72,6 +72,7 @@ export default function PetProfileForm({
     if (!initialPetData) {
       await createPet(formDataWithFiles);
     } else {
+      console.log(JSON.stringify(bodyImages));
       formDataWithFiles.append('image', JSON.stringify(bodyImages));
       await updatePet(initialPetData._id, formDataWithFiles);
     }
