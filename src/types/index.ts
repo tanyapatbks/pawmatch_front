@@ -1,10 +1,11 @@
-export default interface PetFullDetail {
-  petId: string;
+export interface PetFullDetail {
+  _id: string;
   petName: string;
   species: string;
   gender: string;
   age: number;
   image: any[];
+  imagePath: Object;
   behaviorDescription: string;
   vaccinatedComment: string;
 }

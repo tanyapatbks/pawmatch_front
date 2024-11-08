@@ -3,6 +3,7 @@
 import Image from "next/image";
 import ButtonType1Small from "../Button/ButtonType1Small";
 import { useRouter } from "next/navigation";
+import deletePet from "@/libs/petService/deletePet";
 
 export default function MyPetCard({
     imageURL,
@@ -20,8 +21,8 @@ export default function MyPetCard({
         router.push(`/mypets/${petId}/edit`);
     };
     
-    const handleDeletePet = () => {
-        // TODO: implement pet delete fetching logic
+    const handleDeletePet = async () => {
+        await deletePet(petId);
     }
 
     return (
