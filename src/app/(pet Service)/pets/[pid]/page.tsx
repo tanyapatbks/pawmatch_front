@@ -5,7 +5,7 @@ import ButtonType2 from "@/components/Button/ButtonType2";
 import ButtonType2InputFunction from "@/components/Button/ButtonType2InputFunction";
 import { MdRateReview, MdSend } from "react-icons/md";
 import getPet from "@/libs/petService/getPet";
-import PetFullDetailM2 from "@/types";
+import { PetFullDetailM2 } from "@/types";
 // import { MdSend } from "react-icons/md";
 
 interface petDetailData {
@@ -18,7 +18,7 @@ export default async function PetDetailPage({
 }: {
   params: { pid: string };
 }) {
-  console.log("params.pid", params.pid);
+  console.log("=========================================");
   const mockData = new Map();
   mockData.set("001", {
     name: "Tiger II",
@@ -67,18 +67,34 @@ export default async function PetDetailPage({
 
   // let mockD = mockData.get(params.pid);
   let mockD = mockData.get("003");
+  const petId = await params.pid;
+  const petDetail: petDetailData = await getPet(petId);
+  const petDetailD = await petDetail.data;
+  console.log(petDetailD);
 
-  // const petDetail = await getPet(params.pid);
-  // const petDetailData = await petDetail.data;
+  if (!petDetailD) {
+    return (
+      <div className="flex flex-col justify-center items-center text-[80px] font-bold w-screen h-screen text-rose-200 ">
+        {/* {`Loading Data of Pet ID: ${params.pid}`} */}
+        Loading...
+      </div>
+    );
+  }
+  console.log("params.pid", params.pid);
+  console.log(petDetailD);
 
-  // if (!petDetailData) {
-  //   return (
-  //     <div className="flex flex-col justify-center items-center text-[80px] font-bold">
-  //       Loading...
-  //     </div>
-  //   );
-  // }
-  // console.log(petDetailData);
+  let petImage = petDetailD.image;
+  console.log(petImage);
+  if (petImage.length === 0) {
+    for (let i = 0; i < 3; i++) {
+      petImage.push("/img/default-pet-image.png");
+    }
+  } else if (petImage.length % 3 !== 0) {
+    let placeholderImage = 3 - (petImage.length % 3);
+    for (let i = 0; i < placeholderImage; i++) {
+      petImage.push("/img/default-pet-image.png");
+    }
+  }
 
   // Function to determine the background color based on vaccination status
   const getVaccinationBgColor = (status: string) => {
@@ -113,49 +129,57 @@ export default async function PetDetailPage({
       <PageBar name="Pet Detail" />
       <div className="px-[64px] flex flex-row space-x-[64px]">
         <div className="object-contain rounded-[24px] overflow-hidden ring-[4px] ring-rose-200 ">
-          <Image
-            src={mockD.imageURL[0]}
-            alt={mockD.name + "'s picture"}
-            width={480 * 1.5}
-            height={270 * 1.5}
-          />
+          {petDetailD.image[0] === "" ? (
+            <div className="w-[720px] h-[405px] bg-rose-400"></div>
+          ) : (
+            <Image
+              src={petDetailD.image[0]}
+              alt={petDetailD.petName + "'s picture"}
+              width={480 * 1.5}
+              height={270 * 1.5}
+            />
+          )}
         </div>
 
         <div className="flex flex-col space-y-[40px] py-[16px]">
-          <h2 className="text-[40px] font-bold">{mockD.name}</h2>
-          <h2 className="text-[40px] font-semibold">Age: {mockD.age}</h2>
-          <h2 className="text-[40px] font-semibold">Gender: {mockD.gender}</h2>
+          <h2 className="text-[40px] font-bold">{petDetailD.petName}</h2>
+          <h2 className="text-[40px] font-semibold">Age: {petDetailD.age}</h2>
           <h2 className="text-[40px] font-semibold">
-            Species: {mockD.species}
+            Gender: {petDetailD.gender}
+          </h2>
+          <h2 className="text-[40px] font-semibold">
+            Species: {petDetailD.species}
           </h2>
         </div>
       </div>
 
       <div className="px-[64px] flex flex-col space-y-[40px]">
         <h1 className="text-[48px] font-bold">Description</h1>
-        <h1 className="text-[24px] font-normal">{mockD.description}</h1>
+        <h1 className="text-[24px] font-normal">
+          {petDetailD.behaviorDescription}
+        </h1>
       </div>
 
       <div className="px-[64px] flex flex-row justify-between items-center">
         <h1 className="text-[48px] font-bold w-[auto]">Vaccination Status</h1>
         <div
           className={`text-[32px] font-semibold px-8 py-4 rounded-[24px] ${getVaccinationBgColor(
-            mockD.vaccinatedComment
+            petDetailD.vaccinatedComment
           )}`}
         >
-          {getVaccinationStatus(mockD.vaccinatedComment)}
+          {getVaccinationStatus(petDetailD.vaccinatedComment)}
         </div>
       </div>
 
       <div className="px-[64px] py-[32px] grid grid-cols-3 gap-y-[56px] gap-x-[56px]">
-        {mockD.imageURL.map((images: string) => (
+        {petDetailD.image.map((images: string) => (
           <div
             key={images}
             className="w-[480px] h-[270px] object-contain rounded-[24px] overflow-hidden ring-[4px] ring-rose-200"
           >
             <Image
               src={images}
-              alt={mockD.name + "'s picture"}
+              alt={petDetailD.petName + "'s picture"}
               width={480}
               height={270}
             />
