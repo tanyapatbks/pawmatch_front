@@ -4,13 +4,21 @@ import ButtonType1 from "@/components/Button/ButtonType1";
 import ButtonType2 from "@/components/Button/ButtonType2";
 import ButtonType2InputFunction from "@/components/Button/ButtonType2InputFunction";
 import { MdRateReview, MdSend } from "react-icons/md";
+import getPet from "@/libs/petService/getPet";
+import PetFullDetailM2 from "@/types";
 // import { MdSend } from "react-icons/md";
+
+interface petDetailData {
+  success: boolean;
+  data: PetFullDetailM2;
+}
 
 export default async function PetDetailPage({
   params,
 }: {
   params: { pid: string };
 }) {
+  console.log("params.pid", params.pid);
   const mockData = new Map();
   mockData.set("001", {
     name: "Tiger II",
@@ -57,7 +65,20 @@ export default async function PetDetailPage({
     vaccinatedComment: "complete",
   });
 
-  let mockD = mockData.get(params.pid);
+  // let mockD = mockData.get(params.pid);
+  let mockD = mockData.get("003");
+
+  // const petDetail = await getPet(params.pid);
+  // const petDetailData = await petDetail.data;
+
+  // if (!petDetailData) {
+  //   return (
+  //     <div className="flex flex-col justify-center items-center text-[80px] font-bold">
+  //       Loading...
+  //     </div>
+  //   );
+  // }
+  // console.log(petDetailData);
 
   // Function to determine the background color based on vaccination status
   const getVaccinationBgColor = (status: string) => {
@@ -88,6 +109,7 @@ export default async function PetDetailPage({
 
   return (
     <div className="flex flex-col space-y-[64px] text-rose-950">
+      {/* <div>{params.pid}</div> */}
       <PageBar name="Pet Detail" />
       <div className="px-[64px] flex flex-row space-x-[64px]">
         <div className="object-contain rounded-[24px] overflow-hidden ring-[4px] ring-rose-200 ">
