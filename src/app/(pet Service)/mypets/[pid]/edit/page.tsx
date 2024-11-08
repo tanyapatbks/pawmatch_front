@@ -1,7 +1,7 @@
 
 import PetProfileForm from "@/components/Form/PetProfileForm";
 import { PetFullDetail } from "@/types";
-import { getPet } from "@/lib/petService/getPet";
+import { getPet } from "@/libs/petService/getPet";
 
 export default async function PetEdit({ params }: { params: { pid: string } }) {
 

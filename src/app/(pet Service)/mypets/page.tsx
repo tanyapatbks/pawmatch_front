@@ -1,7 +1,7 @@
 
 import MyPetCard from "@/components/PetCard/MyPetCard";
 import AddPetCard from "@/components/AddPetCard";
-import { getMyPets } from "@/lib/petService/getMyPets";
+import { getMyPets } from "@/libs/petService/getMyPets";
 
 export default async function MyPet() {
     

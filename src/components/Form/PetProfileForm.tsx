@@ -9,8 +9,8 @@ import { useState } from "react";
 import { MouseEvent } from 'react';
 import { useRouter } from "next/navigation";
 import { PetFullDetail } from "@/types";
-import createPet from "@/lib/petService/createPet";
-import updatePet from "@/lib/petService/updatePet";
+import createPet from "@/libs/petService/createPet";
+import updatePet from "@/libs/petService/updatePet";
 
 interface PetProfileField {
   petName: string;
