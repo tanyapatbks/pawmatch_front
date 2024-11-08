@@ -1,4 +1,5 @@
 export default async function getPet(pid: string) {
+  console.log(`getPet at ${process.env.NEXT_PUBLIC_PET_SERVICE}/pets/${pid}`);
   const response = await fetch(
     `${process.env.NEXT_PUBLIC_PET_SERVICE}/pets/${pid}`,
     {

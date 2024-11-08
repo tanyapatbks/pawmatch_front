@@ -8,6 +8,7 @@ export default withAuth({
     authorized: ({ token, req }) => {
       const publicPaths = [
         "/",
+        "/pet/:pid*",
         "/api/auth/register",
         "/api/image/compress",
         "/auth/register",

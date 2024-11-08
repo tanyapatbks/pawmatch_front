@@ -70,11 +70,11 @@ export default function Show3PetHome() {
 
   const [randomPetsData, setRandomPetsData] = useState<PetFullDetailM2[]>([]);
 
-  console.log("==================================");
-  for (let i = 0; i < randomPetsData.length; i++) {
-    console.log(randomPetsData[i].petId);
-    console.log(randomPetsData[i].image[0]);
-  }
+  // console.log("==================================");
+  // for (let i = 0; i < randomPetsData.length; i++) {
+  //   console.log(randomPetsData[i].petId);
+  //   console.log(randomPetsData[i].image[0]);
+  // }
 
   useEffect(() => {
     const fetchData = async () => {
@@ -87,9 +87,9 @@ export default function Show3PetHome() {
   const handleNewRandom = () => {
     const fetchData = async () => {
       const randomPets = await getRandomPets();
-      for (let i = 0; i < randomPets.data.length; i++) {
-        console.log(`new qurry ${i}`, randomPets.data[i].petId);
-      }
+      // for (let i = 0; i < randomPets.data.length; i++) {
+      //   console.log(`new qurry ${i}`, randomPets.data[i].petId);
+      // }
       setRandomPetsData(randomPets.data);
     };
     fetchData();
@@ -110,7 +110,11 @@ export default function Show3PetHome() {
         {randomPetsData.map((pet: PetFullDetailM2) => (
           <PetCardHome
             key={pet.petId}
-            imageURL={pet.image[0] ? pet.image[0] : ""}
+            imageURL={
+              Array.isArray(pet.image) && pet.image.length > 0
+                ? pet.image[0]
+                : ""
+            }
             name={pet.petName}
             gender={pet.gender}
             age={pet.age}
