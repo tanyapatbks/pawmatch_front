@@ -38,7 +38,6 @@ const mockData = [
 
 export default async function MyPet() {
     
-    // TODO: replace this with fetching logic
     const myPets = await getMyPets();
 
     return (

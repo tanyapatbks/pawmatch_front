@@ -1,10 +1,11 @@
 export interface PetFullDetail {
-  petId: string;
+  _id: string;
   petName: string;
   species: string;
   gender: string;
   age: number;
   image: any[];
+  imagePath: Object;
   behaviorDescription: string;
   vaccinatedComment: string;
 }

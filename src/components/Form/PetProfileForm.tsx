@@ -10,6 +10,7 @@ import { MouseEvent } from 'react';
 import { useRouter } from "next/navigation";
 import { PetFullDetail } from "@/types";
 import createPet from "@/lib/petService/createPet";
+import updatePet from "@/lib/petService/updatePet";
 
 interface PetProfileField {
   petName: string;
@@ -57,18 +58,22 @@ export default function PetProfileForm({
       formDataWithFiles.append(key, formData[key as keyof PetProfileField] as string);
     });
 
-    images.forEach((image, index) => {
+    const bodyImages: string[] = [];
+
+    images.forEach(async (image, index) => {
+      if (!image.file) {
+        bodyImages.push(initialPetData?.imagePath[image.dataURL]);
+        return;
+      }
+      bodyImages.push(image.file.name);
       formDataWithFiles.append('images', image.file);
     });
 
-    console.log(formDataWithFiles.keys().toArray())
-    console.log(formDataWithFiles.values().toArray())
-
-    // TODO: implement fetching logic
     if (!initialPetData) {
       await createPet(formDataWithFiles);
     } else {
-      // fetch pet update
+      formDataWithFiles.append('image', JSON.stringify(bodyImages));
+      await updatePet(initialPetData._id, formDataWithFiles);
     }
 
     router.push("/mypets");
