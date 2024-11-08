@@ -1,11 +1,3 @@
-import PetRandomFilter from "@/types/index";
-/*export default interface PetRandomFilter {
-  species: string;
-  gender: string;
-  ageFrom: number;
-  ageTo: number;
-  vaccinatedComment: string;
-} */
 export default async function getRandomPets() {
   console.log(
     "getRandomPets at",

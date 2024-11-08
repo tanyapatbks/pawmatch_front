@@ -1,8 +1,8 @@
 "use client";
 
 import PetCardHome from "./PetCard/PetCardHome";
-import PetFullDetail from "@/types/index";
-import PetFullDetailM2 from "@/types/index";
+import { PetFullDetail, PetFullDetailM1 } from "@/types/index";
+import { PetFullDetailM2 } from "@/types/index";
 import { useEffect } from "react";
 import { useState } from "react";
 import getRandomPets from "@/libs/petService/getRandomPets";
@@ -12,31 +12,10 @@ import { IoDiceOutline } from "react-icons/io5";
 
 interface PetCardHomeProps {
   success: boolean;
-  data: PetFullDetail[];
+  data: PetFullDetailM1[];
 }
 
 export default function Show3PetHome() {
-  /*
-    imageURL: string;
-  name: string;
-  description: string;
-  petDetailPath: string; */
-  // const { data: session, status } = useSession();
-  // if (status === "loading") {
-  //   return <div>Loading...</div>;
-  // }
-
-  // if (!session) {
-  //   return <div>No session</div>;
-  // }
-
-  // if (!session.accessToken) {
-  //   return <div>No session accessToken</div>;
-  // }
-
-  // // Since session.accessToken exists, we can assign it directly
-  // const token = session.accessToken;
-
   let mockData = [
     {
       pid: "001",
@@ -68,7 +47,7 @@ export default function Show3PetHome() {
     },
   ];
 
-  const [randomPetsData, setRandomPetsData] = useState<PetFullDetailM2[]>([]);
+  const [randomPetsData, setRandomPetsData] = useState<PetFullDetailM1[]>([]);
 
   // console.log("==================================");
   // for (let i = 0; i < randomPetsData.length; i++) {
@@ -107,7 +86,7 @@ export default function Show3PetHome() {
   return (
     <div className="flex flex-col space-y-[64px]">
       <div className="space-x-[64px] flex flex-row items-start">
-        {randomPetsData.map((pet: PetFullDetailM2) => (
+        {randomPetsData.map((pet: PetFullDetailM1) => (
           <PetCardHome
             key={pet.petId}
             imageURL={
