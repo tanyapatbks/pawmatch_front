@@ -3,32 +3,46 @@
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import sendMatch from "@/libs/matchService/sendMatch";
+import { useSession } from "next-auth/react";
 export default function SendPetCard({
     imageURL,
     name,
     petId,
+    userId,
     sendPetProfile
 }: {
     imageURL?: string;
     name: string;
     petId: string;
-    sendPetProfile: {
+    userId: string;
+    sendPetProfile?: {
         petId: string;
         petName: string;
         userId: string;
     };
 }) {
-
     const router = useRouter();
-    const handleSendMatch =async () => {
-       
-        router.push(`/mypets/${petId}/edit`);
+    console.log("sendPetProfile", userId);
+    const handleSendMatch = async () => {
+        if (!sendPetProfile) return;
+        
+        if (confirm("Do you want to send a match request?")) {
+            await sendMatch(
+                {
+                    senderPetId: petId,
+                    senderUserId: userId,
+                    senderPetName: name,
+                    receiverPetId: sendPetProfile.petId,
+                    receiverUserId: sendPetProfile.userId,
+                    receiverPetName: sendPetProfile.petName,
+                }
+            );
+            router.push(`/`);
+        }
     }
-    console.log(sendPetProfile);
     return (
 
         <div className="w-[250px] h-[300px] rounded-xl bg-white overflow-hidden text-rose-950 shadow-md">
-
             {!imageURL ? (
                 <div className="w-full h-[65%] relative rounded-t-lg bg-rose-600"> </div>
             ) : (
@@ -49,10 +63,10 @@ export default function SendPetCard({
                 </h3>
 
                 <div className="flex space-x-3 text-center font-bold justify-center">
-                   <button className="flex justify-center items-center w-[128px] h-8 rounded-md text-sm bg-white border-[2.5px] border-rose-600 hover:bg-rose-200"
-                    onClick={(e) => handleSendMatch()}>
-                    Select a Pet
-                </button>
+                    <button className="flex justify-center items-center w-[128px] h-8 rounded-md text-sm bg-white border-[2.5px] border-rose-600 hover:bg-rose-200"
+                        onClick={(e) => handleSendMatch()}>
+                        Select a Pet
+                    </button>
                 </div>
 
             </div>

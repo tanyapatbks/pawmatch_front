@@ -30,3 +30,13 @@ export interface PetFullDetailM2 {
   behaviorDescription: string;
   vaccinatedComment: string;
 }
+
+export interface PetMatchDetail {
+  matchId: string,
+    matchPetId1: string,
+    matchPetName1: string,
+    matchUserId1: string,
+    matchPetId2: string,
+    matchPetName2: string,
+    matchUserId2: string,
+}

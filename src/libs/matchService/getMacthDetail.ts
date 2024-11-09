@@ -1,17 +1,20 @@
+'use server'
 import { cookies } from 'next/headers'
-
-export default async function getMacthDetail(petId: string) {
+import { getToken } from 'next-auth/jwt'
+export default async function getMacthDetail() {
     const cookieStore = cookies();
-    if (!cookieStore.has('user')) {
-        throw new Error("user token required");
+    const token = await getToken({ req: { cookies: cookieStore }, secret: process.env.NEXTAUTH_SECRET });
+    if (!token) {
+        throw new Error("Not authenticated");
     }
-    const jwt = cookieStore.get('user')?.value;
-    const response = await fetch(`${process.env.NEXT_PUBLIC_PET_MATCH_SERVICE}/getMatchRequestDetail/${petId}`, {
+
+    const jwt = token.accessToken;
+    const response = await fetch(`${process.env.NEXT_PUBLIC_PET_MATCH_SERVICE}/getMatchRequestDetail`, {
         method: "GET",
         headers: {
             authorization: `Bearer ${jwt}`
         }
-});
+    });
     if (!response.ok) {
         throw new Error("Failed to Fetch Match Request Detail");
     }

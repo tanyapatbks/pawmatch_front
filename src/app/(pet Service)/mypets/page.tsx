@@ -12,7 +12,7 @@ export default async function MyPet() {
             <div className="w-[1200px] grid grid-cols-4 justify-items-center gap-y-10 pb-10">
                 {
                     myPets.map((pet) => (
-                        <MyPetCard name={pet.petName} petId={pet.petId} imageURL={pet.image} />
+                        <MyPetCard  name={pet.petName} petId={pet.petId} imageURL={pet.image} />
                     ))
                 }
 
