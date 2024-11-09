@@ -1,0 +1,29 @@
+@startuml Create Pet
+
+participant "User" as user
+participant "Frontend" as frontend
+participant "Kong\n<<Gateway>>" as gateway
+participant "Authen Service" as authService
+participant "Authen DB" as authdb
+participant "PetService" as petService
+participant "Pet DB" as petdb
+
+user -> frontend ++:Login to the web
+frontend -> gateway ++:request authentication
+gateway -> authService ++:request authentication
+authService -> authdb ++:query user
+authdb -> authService --:return user + token
+authService --> gateway --:return user + token
+gateway --> frontend :return user + token
+user -> frontend : click "my pets" button
+frontend --> user: return my pets page
+user -> frontend :click "add pet" button and fill data 
+frontend -> gateway :request add pet
+gateway -> petService ++:request add pet
+petService -> petdb ++:insert pet
+petdb --> petService --:return pet
+petService --> gateway --:return pet
+gateway --> frontend:return pet
+frontend --> user: return new pet in the my pet list
+
+@enduml
