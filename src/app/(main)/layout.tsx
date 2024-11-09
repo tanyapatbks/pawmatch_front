@@ -12,6 +12,7 @@ export default function layoutMain({
     <div className="space-y-[24px] bg-white">
       <TopMenu />
       {children}
+
     </div>
   );
 }

@@ -6,6 +6,9 @@ import ButtonType2InputFunction from "@/components/Button/ButtonType2InputFuncti
 import { MdRateReview, MdSend } from "react-icons/md";
 import getPet from "@/libs/petService/getPet";
 import { PetFullDetailM2 } from "@/types";
+import sendMatch from "@/libs/matchService/sendMatch";
+import Link from "next/link";
+
 // import { MdSend } from "react-icons/md";
 
 interface petDetailData {
@@ -70,7 +73,6 @@ export default async function PetDetailPage({
   const petId = await params.pid;
   const petDetail: petDetailData = await getPet(petId);
   const petDetailD = await petDetail.data;
-  console.log(petDetailD);
 
   if (!petDetailD) {
     return (
@@ -122,7 +124,19 @@ export default async function PetDetailPage({
         return "Unknown"; // Fallback color if status is unknown
     }
   };
-
+  /*const sendRequest =async () => {
+    const data={
+      senderUserId: "1",
+      senderPetId:
+    }
+    const response = await sendMatch();
+    if (response.success) {
+      alert("Match request sent successfully");
+    } else {
+      alert("Match request failed");
+    }
+  };
+  }*/
   return (
     <div className="flex flex-col space-y-[64px] text-rose-950">
       {/* <div>{params.pid}</div> */}
@@ -197,13 +211,14 @@ export default async function PetDetailPage({
         />
       </div>
       <div className="flex justify-center items-center">
+        <Link href={`/pets/${params.pid}/request`}>
         <ButtonType2InputFunction
           name="Send Request"
           isShowLeft={false}
           isShowRight={true}
           iconRight={<MdSend />}
-          // onClick={void}
         />
+        </Link>
       </div>
     </div>
   );

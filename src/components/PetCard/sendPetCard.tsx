@@ -1,29 +1,30 @@
 'use client'
 
 import Image from "next/image";
-import ButtonType1Small from "../Button/ButtonType1Small";
 import { useRouter } from "next/navigation";
-import deletePet from "@/libs/petService/deletePet";
-export default function MyPetCard({
+import sendMatch from "@/libs/matchService/sendMatch";
+export default function SendPetCard({
     imageURL,
     name,
-    petId
+    petId,
+    sendPetProfile
 }: {
     imageURL?: string;
     name: string;
     petId: string;
+    sendPetProfile: {
+        petId: string;
+        petName: string;
+        userId: string;
+    };
 }) {
 
     const router = useRouter();
-    
-    const handleEditPet = () => {
+    const handleSendMatch =async () => {
+       
         router.push(`/mypets/${petId}/edit`);
-    };
-    
-    const handleDeletePet = async () => {
-        await deletePet(petId);
     }
-   
+    console.log(sendPetProfile);
     return (
 
         <div className="w-[250px] h-[300px] rounded-xl bg-white overflow-hidden text-rose-950 shadow-md">
@@ -48,14 +49,10 @@ export default function MyPetCard({
                 </h3>
 
                 <div className="flex space-x-3 text-center font-bold justify-center">
-                    <ButtonType1Small
-                        name="Edit"
-                        onClick={handleEditPet}
-                    />
-                    <ButtonType1Small
-                        name="Delete"
-                        onClick={handleDeletePet}
-                    />
+                   <button className="flex justify-center items-center w-[128px] h-8 rounded-md text-sm bg-white border-[2.5px] border-rose-600 hover:bg-rose-200"
+                    onClick={(e) => handleSendMatch()}>
+                    Select a Pet
+                </button>
                 </div>
 
             </div>

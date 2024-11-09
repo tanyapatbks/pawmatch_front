@@ -9,6 +9,7 @@ import getRandomPets from "@/libs/petService/getRandomPets";
 
 import ButtonType2InputFunction from "./Button/ButtonType2InputFunction";
 import { IoDiceOutline } from "react-icons/io5";
+import { usePetProfile } from "@/providers/petProfileStoreProvider";
 
 interface PetCardHomeProps {
   success: boolean;

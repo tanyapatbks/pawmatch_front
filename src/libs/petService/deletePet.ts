@@ -12,7 +12,7 @@ export default async function deletePet(petId: string) {
 
   const jwt = cookieStore.get('user')?.value;
 
-  const response = await fetch(`${process.env.API_GATEWAY_URL}/pets/${petId}`, {
+  const response = await fetch(`${process.env.NEXT_PUBLIC_PET_SERVICE}/pets/${petId}`, {
     method: "DELETE",
     headers: {
       authorization: `Bearer ${jwt}`

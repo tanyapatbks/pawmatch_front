@@ -3,7 +3,6 @@ import Show3PetHome from "@/components/Show3PetHome";
 import ButtonType2 from "@/components/Button/ButtonType2";
 import ButtonType2InputFunction from "@/components/Button/ButtonType2InputFunction";
 import { IoDiceOutline } from "react-icons/io5";
-
 export default function Home() {
   return (
     <div className="flex flex-col space-y-[64px]">
