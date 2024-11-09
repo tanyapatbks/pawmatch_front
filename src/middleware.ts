@@ -12,6 +12,7 @@ export default withAuth({
         "/api/auth/register",
         "/api/image/compress",
         "/auth/register",
+        "/pets/:pid*/reviews"
       ];
       const isPublicPath = publicPaths.some((path) =>
         req.nextUrl.pathname.startsWith(path)
