@@ -1,4 +1,3 @@
-// src/app/(user Service)/auth/register/page.tsx
 "use client";
 
 import { useState, FormEvent } from "react";
@@ -41,13 +40,11 @@ export default function Register() {
 
     if (type === "file" && files) {
       const file = files[0];
-      // Update form data with file
       setFormData((prev) => ({
         ...prev,
         [name]: file,
       }));
 
-      // Create preview URL
       if (file) {
         const reader = new FileReader();
         reader.onloadend = () => {
@@ -76,45 +73,55 @@ export default function Register() {
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setError("");
-
-    // Validation
-    if (formData.password !== formData.confirmPassword) {
-      setError("Passwords do not match");
-      return;
-    }
-
     setIsLoading(true);
 
     try {
-      // Create FormData for file upload
+      // Validation
+      if (formData.password !== formData.confirmPassword) {
+        setError("Passwords do not match");
+        setIsLoading(false);
+        return;
+      }
+
       const submitData = new FormData();
-      Object.keys(formData).forEach((key) => {
-        if (key !== "confirmPassword" && key !== "profileImage") {
-          submitData.append(key, formData[key as keyof RegisterForm] as string);
+
+      // Add all fields except confirmPassword
+      const { confirmPassword, ...dataToSubmit } = formData;
+
+      // Log form data being submitted (excluding sensitive info)
+      console.log("Submitting form data:", {
+        ...dataToSubmit,
+        password: "[REDACTED]",
+        profileImage: dataToSubmit.profileImage ? "File present" : "No file"
+      });
+
+      // Add text fields
+      Object.entries(dataToSubmit).forEach(([key, value]) => {
+        if (key !== "profileImage" && value) {
+          submitData.append(key, value);
         }
       });
+
+      // Add profile image if exists
       if (formData.profileImage) {
         submitData.append("profileImage", formData.profileImage);
       }
 
-      const response = await fetch("/api/auth/register", {
+      const response = await fetch("/api/register", {
         method: "POST",
         body: submitData,
       });
 
-      const data = await response.json();
-
-      if (response.ok) {
-        // Registration successful
-        router.push(
-          "/auth/login?message=Registration successful! Please log in."
-        );
-      } else {
-        setError(data.message || "Registration failed");
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => null);
+        throw new Error(errorData?.error || `Registration failed with status: ${response.status}`);
       }
-    } catch (err) {
-      setError("An error occurred. Please try again.");
-      console.error("Registration error:", err);
+
+      // Registration successful
+      router.push("/auth/login?message=Registration successful! Please log in.");
+    } catch (error) {
+      console.error("Registration error:", error);
+      setError(error instanceof Error ? error.message : "Registration failed");
     } finally {
       setIsLoading(false);
     }
@@ -176,6 +183,7 @@ export default function Register() {
               value={formData.name}
               onChange={handleInputChange}
               required
+              autoComplete="given-name"
             />
           </div>
 
@@ -188,6 +196,7 @@ export default function Register() {
               value={formData.surname}
               onChange={handleInputChange}
               required
+              autoComplete="family-name"
             />
           </div>
         </div>
@@ -201,6 +210,7 @@ export default function Register() {
             value={formData.displayName}
             onChange={handleInputChange}
             required
+            autoComplete="nickname"
           />
         </div>
 
@@ -213,6 +223,7 @@ export default function Register() {
             value={formData.email}
             onChange={handleInputChange}
             required
+            autoComplete="email"
           />
         </div>
 
@@ -225,6 +236,7 @@ export default function Register() {
             value={formData.telephoneNumber}
             onChange={handleInputChange}
             required
+            autoComplete="tel"
           />
         </div>
 
@@ -249,6 +261,8 @@ export default function Register() {
               value={formData.password}
               onChange={handleInputChange}
               required
+              minLength={6}
+              autoComplete="new-password"
             />
           </div>
 
@@ -261,11 +275,16 @@ export default function Register() {
               value={formData.confirmPassword}
               onChange={handleInputChange}
               required
+              autoComplete="new-password"
             />
           </div>
         </div>
 
-        <button type="submit" className={styles.button} disabled={isLoading}>
+        <button 
+          type="submit" 
+          className={styles.button} 
+          disabled={isLoading}
+        >
           {isLoading ? "Creating Account..." : "Create Account"}
         </button>
 
