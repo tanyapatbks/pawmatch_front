@@ -15,7 +15,7 @@ interface PetCardHomeProps {
   data: PetFullDetailM1[];
 }
 
-export default function Show3PetHome(token?: string | null) {
+export default function Show3PetHome({ token }: { token?: string }) {
   let mockData = [
     {
       pid: "001",
@@ -79,26 +79,13 @@ export default function Show3PetHome(token?: string | null) {
     fetchData();
   };
 
-  // const randomPets = await getRandomPets();
-  // const randomPetsData = await randomPets.data;
-  if (!randomPetsData) {
-    return (
-      <div className="flex flex-col justify-center items-center text-[80px] font-bold">
-        Loading...
-      </div>
-    );
-  }
   return (
     <div className="flex flex-col space-y-[64px]">
       <div className="space-x-[64px] flex flex-row items-start">
         {randomPetsData.map((pet: PetFullDetailM1) => (
           <PetCardHome
             key={pet.petId}
-            imageURL={
-              Array.isArray(pet.image) && pet.image.length > 0
-                ? pet.image[0]
-                : ""
-            }
+            imageURL={pet.image}
             name={pet.petName}
             gender={pet.gender}
             age={pet.age}

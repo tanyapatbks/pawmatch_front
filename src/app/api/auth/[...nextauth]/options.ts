@@ -24,7 +24,11 @@ export const authOptions: AuthOptions = {
           let authResult: AuthResult;
 
           if (credentials.isRegistering === "true") {
-            if (!credentials.name || !credentials.surname || !credentials.displayName) {
+            if (
+              !credentials.name ||
+              !credentials.surname ||
+              !credentials.displayName
+            ) {
               return null;
             }
 
@@ -39,9 +43,15 @@ export const authOptions: AuthOptions = {
               lineId: credentials.lineId || "",
             });
 
-            authResult = await authClient.login(credentials.email, credentials.password);
+            authResult = await authClient.login(
+              credentials.email,
+              credentials.password
+            );
           } else {
-            authResult = await authClient.login(credentials.email, credentials.password);
+            authResult = await authClient.login(
+              credentials.email,
+              credentials.password
+            );
           }
 
           if (!authResult?.userId) return null;
@@ -71,6 +81,7 @@ export const authOptions: AuthOptions = {
   callbacks: {
     async jwt({ token, user }) {
       if (user) {
+        // console.log("User in JWT callback:", user);
         token.accessToken = user.accessToken;
         token.userId = user.id;
         token.email = user.email;
@@ -81,24 +92,25 @@ export const authOptions: AuthOptions = {
         token.lineId = user.lineId;
         token.profileImage = user.profileImage;
       }
+      // console.log("token in JWT callback:", token);
       return token;
     },
     async session({ session, token }) {
-      return {
-        ...session,
+      // console.log("Token in session callback:", token); // Debugging line
+      session.accessToken = token.accessToken;
+      session.user = {
+        id: token.userId,
+        email: token.email || "",
+        name: token.name || "",
         accessToken: token.accessToken,
-        user: {
-          id: token.userId,
-          email: token.email || "",
-          name: token.name || "",
-          accessToken: token.accessToken,
-          surname: token.surname,
-          displayName: token.displayName,
-          telephoneNumber: token.telephoneNumber,
-          lineId: token.lineId,
-          profileImage: token.profileImage,
-        },
+        surname: token.surname || "",
+        displayName: token.displayName || "",
+        telephoneNumber: token.telephoneNumber || "",
+        lineId: token.lineId || "",
+        profileImage: token.profileImage,
       };
+      // console.log("Session after session callback:", session); // Debugging line
+      return session;
     },
   },
   pages: {
