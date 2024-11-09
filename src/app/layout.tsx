@@ -3,7 +3,6 @@ import localFont from "next/font/local";
 import "./globals.css";
 import TopMenu from "@/components/TopMenu";
 import { NextAuthProvider } from "@/components/Providers"; // เพิ่มบรรทัดนี้
-import { PetProfileProvider } from "@/providers/petProfileStoreProvider";
 
 // import NextAuthProvider from "@/providers/NextAuthProvider";
 

@@ -1,5 +1,4 @@
 import TopMenu from "@/components/TopMenu";
-import { PetProfileProvider } from "@/providers/petProfileStoreProvider";
 
 export default function layoutMain({
   children,
