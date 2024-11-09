@@ -15,7 +15,7 @@ interface PetCardHomeProps {
   data: PetFullDetailM1[];
 }
 
-export default function Show3PetHome() {
+export default function Show3PetHome(token?: string | null) {
   let mockData = [
     {
       pid: "001",
@@ -57,8 +57,13 @@ export default function Show3PetHome() {
 
   useEffect(() => {
     const fetchData = async () => {
-      const randomPets = await getRandomPets();
-      setRandomPetsData(randomPets.data);
+      if (token) {
+        const randomPets = await getRandomPets(token);
+        setRandomPetsData(randomPets.data);
+      } else {
+        const randomPets = await getRandomPets();
+        setRandomPetsData(randomPets.data);
+      }
     };
     fetchData();
   }, []);
