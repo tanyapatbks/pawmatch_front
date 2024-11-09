@@ -1,21 +1,39 @@
-export default async function getRandomPets() {
+export default async function getRandomPets(token?: string) {
   console.log(
     "getRandomPets at",
     process.env.NEXT_PUBLIC_PET_SERVICE,
     "/pets/random"
   );
-  const response = await fetch(
-    //${process.env.NEXT_PUBLIC_PET_SERVICE}
-    `${process.env.NEXT_PUBLIC_PET_SERVICE}/pets/random`,
-    {
-      method: "GET",
-      // headers: {
-      //   authorization: `Bearer ${token}`,
-      // },
+  if (!token) {
+    const response = await fetch(
+      //${process.env.NEXT_PUBLIC_PET_SERVICE}
+      `${process.env.NEXT_PUBLIC_PET_SERVICE}/pets/random`,
+      {
+        method: "GET",
+        // headers: {
+        //   authorization: `Bearer ${token}`,
+        // },
+      }
+    );
+    if (!response.ok) {
+      throw new Error("Failed to Fetch Pets");
     }
-  );
-  if (!response.ok) {
-    throw new Error("Failed to Fetch Pets");
+    return await response.json();
+  } else {
+    const response = await fetch(
+      //${process.env.NEXT_PUBLIC_PET_SERVICE}
+      `${process.env.NEXT_PUBLIC_PET_SERVICE}/pets/random`,
+      {
+        method: "GET",
+        headers: {
+          authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error("Failed to Fetch Pets");
+    }
+    return await response.json();
   }
-  return await response.json();
 }
