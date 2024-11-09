@@ -10,13 +10,11 @@ export default async function getRandomPets(token?: string) {
       `${process.env.NEXT_PUBLIC_PET_SERVICE}/pets/random`,
       {
         method: "GET",
-        // headers: {
-        //   authorization: `Bearer ${token}`,
-        // },
       }
     );
     if (!response.ok) {
       throw new Error("Failed to Fetch Pets");
+      console.log(response);
     }
     return await response.json();
   } else {
@@ -32,7 +30,9 @@ export default async function getRandomPets(token?: string) {
     );
 
     if (!response.ok) {
-      throw new Error("Failed to Fetch Pets");
+      // throw new Error("Failed to Fetch Pets");
+
+      console.log(response);
     }
     return await response.json();
   }
