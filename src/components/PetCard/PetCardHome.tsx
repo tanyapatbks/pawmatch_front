@@ -22,11 +22,11 @@ export default function PetCardHome({
       {noImage ? (
         <div className="w-full h-[208px] bg-rose-200"> </div>
       ) : (
-        <div className="object-contain h-[208px] w-full">
+        <div className="object-contain h-[208px] w-full overflow-hidden items-center">
           <Image
             src={imageURL}
             alt={name + "'s image"}
-            className=""
+            className="object-none object-center"
             width={320}
             height={208}
           />
