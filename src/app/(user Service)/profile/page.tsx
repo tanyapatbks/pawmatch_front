@@ -147,7 +147,7 @@ export default function ProfilePage() {
   };
 
   return (
-    <div className="max-w-2xl mx-auto p-4">
+    <div className="max-w-2xl mx-auto p-4 text-rose-950">
       <div className="bg-white rounded-lg shadow-xl ">
         <div className="bg-rose-500 text-white p-4 rounded-t-lg flex justify-between items-center">
           <h1 className="text-2xl font-semibold">Profile Information</h1>
@@ -155,18 +155,24 @@ export default function ProfilePage() {
             {!isEditing && (
               <Button
                 variant="ghost"
-                className="text-white hover:text-white hover:bg-rose-400"
+                className=" text-rose-950 bg-white hover:bg-rose-200 rounded-[8px] border-[2.5px] border-rose-600"
                 onClick={() => setIsEditing(true)}
               >
-                <PenSquare className="w-5 h-5" />
+                <div className="flex flex-row items-center space-x-[16px]">
+                  <PenSquare className="w-5 h-5" />
+                  <h1 className="text-[20px]"> Edit Profile</h1>
+                </div>
               </Button>
             )}
             <Button
               variant="ghost"
-              className="text-white hover:text-white hover:bg-rose-400"
+              className=" text-rose-950 bg-white hover:bg-rose-200 rounded-[8px] border-[2.5px] border-rose-600"
               onClick={() => signOut({ callbackUrl: "/auth/login" })}
             >
-              <LogOut className="w-5 h-5" />
+              <div className="flex flex-row items-center space-x-[16px]">
+                <LogOut className="w-5 h-5" />
+                <h1 className="text-[20px]"> Log Out</h1>
+              </div>
             </Button>
           </div>
         </div>
@@ -227,6 +233,7 @@ export default function ProfilePage() {
                 <Button
                   type="button"
                   variant="outline"
+                  className=" bg-white text-rose-950 border-[2.5px] border-rose-600 hover:bg-rose-200 hover:text-rose-950"
                   onClick={() => {
                     setIsEditing(false);
                     if (user) {
@@ -241,16 +248,24 @@ export default function ProfilePage() {
                   }}
                   disabled={isLoading}
                 >
-                  <X className="w-4 h-4 mr-2" />
-                  Cancel
+                  <div className="flex flex-row items-center space-x-[16px]">
+                    <X className="w-4 h-4 mr-2" />
+                    <h1 className="text-[20px]"> Cancel</h1>
+                  </div>
                 </Button>
-                <Button type="submit" disabled={isLoading}>
-                  {isLoading ? (
-                    <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                  ) : (
-                    <Check className="w-4 h-4 mr-2" />
-                  )}
-                  Save Changes
+                <Button
+                  type="submit"
+                  disabled={isLoading}
+                  className=" bg-red-600 hover:bg-red-700 text-rose-50"
+                >
+                  <div className="flex flex-row items-center space-x-[16px]">
+                    {isLoading ? (
+                      <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                    ) : (
+                      <Check className="w-4 h-4 mr-2" />
+                    )}
+                    <h1 className="text-[20px]"> Save Changes</h1>
+                  </div>
                 </Button>
               </div>
             )}
