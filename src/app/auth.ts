@@ -1,87 +1,53 @@
-import { NextAuthOptions } from "next-auth";
-import CredentialsProvider from "next-auth/providers/credentials";
-import userLogin from "@/libs/userService/userLogIn";
-import getUserProfile from "@/libs/userService/getUserProfile";
+import type { DefaultSession, DefaultUser } from "next-auth";
+import { JWT } from "next-auth/jwt"
 
-export const authOptions: NextAuthOptions = {
-  providers: [
-    CredentialsProvider({
-      name: "Credentials",
-      credentials: {
-        email: { label: "Email", type: "email" },
-        password: { label: "Password", type: "password" },
-      },
-      async authorize(credentials) {
-        try {
-          if (!credentials?.email || !credentials?.password) {
-            throw new Error("Please enter your email and password");
-          }
+// Base user without auth-specific fields
+export interface BaseUser {
+  id: string;
+  email: string;
+  name: string;
+  surname: string;
+  displayName: string;
+  telephoneNumber: string;
+  lineId: string;
+  profileImage?: string;
+}
 
-          const result = await userLogin(
-            credentials.email,
-            credentials.password
-          );
-          if (!result) {
-            throw new Error("Invalid credentials");
-          }
-          const profile = await getUserProfile(result.userId);
+// Auth-specific types
+export interface AuthResult {
+  userId: string;
+  token: string;
+}
 
-          return {
-            id: result.userId,
-            email: credentials.email,
-            accessToken: result.token,
-            userId: result.userId,
-            name: profile.name,
-            surname: profile.surname,
-            displayName: profile.displayName,
-            telephoneNumber: profile.telephoneNumber,
-            lineId: profile.lineId,
-            profileImage: profile.profileImage,
-          };
-        } catch (error) {
-          console.error("Login error:", error);
-          throw new Error(
-            error instanceof Error ? error.message : "Login failed"
-          );
-        }
-      },
-    }),
-  ],
-  callbacks: {
-    async jwt({ token, user }) {
-      if (user) {
-        token.accessToken = user.accessToken;
-        token.userId = user.userId;
-        token.name = user.name;
-        token.surname = user.surname;
-        token.displayName = user.displayName;
-        token.telephoneNumber = user.telephoneNumber;
-        token.lineId = user.lineId;
-        token.profileImage = user.profileImage;
-      }
-      return token;
-    },
-    async session({ session, token }) {
-      return {
-        ...session,
-        accessToken: token.accessToken,
-        userId: token.userId,
-        user: {
-          ...(session.user || {}),
-          userId: token.userId,
-          email: session.user?.email,
-          name: token.name,
-          surname: token.surname,
-          displayName: token.displayName,
-          telephoneNumber: token.telephoneNumber,
-          lineId: token.lineId,
-          profileImage: token.profileImage,
-        },
-      };
-    },
-  },
-  pages: {
-    signIn: "/auth/login",
-  },
-  secret: process.env.NEXTAUTH_SECRET,
-};
+// Extended user with auth token
+export interface AuthUser extends BaseUser {
+  accessToken: string;
+}
+
+// Sessions
+export interface ExtendedSession extends DefaultSession {
+  user: AuthUser;
+  accessToken: string;
+}
+
+// JWT contents
+export interface ExtendedToken {
+  accessToken: string;
+  userId: string;
+  email: string;
+  name: string;
+  surname: string;
+  displayName: string;
+  telephoneNumber: string;
+  lineId: string;
+  profileImage?: string;
+}
+
+// Add these type declarations
+declare module "next-auth/jwt" {
+  interface JWT extends ExtendedToken {}
+}
+
+declare module "next-auth" {
+  interface User extends AuthUser {}
+}
