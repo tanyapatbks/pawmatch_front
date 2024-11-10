@@ -1,0 +1,43 @@
+@startuml Matching
+
+participant "User" as user
+participant "Frontend" as frontend
+participant "Kong\n<<Gateway>>" as gateway
+participant "PetService" as petService
+participant "Pet DB" as petdb
+participant "PetMatchingService" as petmatchservice
+participant "PetMatch DB" as petmatchdb
+ 
+user -> frontend ++: click random pet
+frontend -> gateway ++: request petService
+gateway -> petService ++: request random pet
+petService -> petdb ++: qurry random pet
+petdb --> petService:  return pets
+petService --> gateway:  return pets
+gateway --> frontend: return pets
+frontend --> user: show random pet
+user -> frontend: select a pet
+frontend -> gateway : request pet
+gateway -> petService : request request pet pet
+petService -> petdb : qurry pet
+petdb --> petService: return pet detail
+petService --> gateway : return pet detail
+gateway --> frontend : return pet detail
+frontend --> user : show pet
+
+user -> frontend : click "send request" button
+frontend -> gateway : request petMatchService
+gateway -> petmatchservice ++: request match
+petmatchservice -> petmatchdb ++: insert match
+petmatchdb --> petmatchservice --: return result
+petmatchservice --> gateway --: return result
+gateway --> frontend --: return result
+frontend --> user : "sent success" massage
+
+
+
+
+
+
+ 
+@enduml

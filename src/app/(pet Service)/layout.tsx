@@ -7,8 +7,10 @@ export default function layoutMain({
 }) {
   return (
     <div className="space-y-[24px] bg-white">
+  
       <TopMenu />
       {children}
+     
     </div>
   );
 }

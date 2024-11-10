@@ -1,16 +1,16 @@
-
 import { cookies } from 'next/headers'
+import {getToken} from 'next-auth/jwt';
 
 export async function getMyPets() {
   const cookieStore = cookies();
 
-  if (!cookieStore.has('user')) {
-    throw new Error("user token required");
+  const token = await getToken({ req: { cookies: cookieStore }, secret: process.env.NEXTAUTH_SECRET });
+  if (!token) {
+    throw new Error("Not authenticated");
   }
 
-  const jwt = cookieStore.get('user')?.value;
-  
-  const response = await fetch(`${process.env.API_GATEWAY_URL}/pets/user`, {
+  const jwt = token.accessToken;
+  const response = await fetch(`${process.env.NEXT_PUBLIC_PET_SERVICE}/pets/user`, {
     method: "GET",
     headers: {
       authorization: `Bearer ${jwt}`,

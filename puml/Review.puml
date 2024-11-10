@@ -1,0 +1,37 @@
+@startuml Review
+
+participant "User" as user
+participant "Frontend" as frontend
+participant "Kong\n<<Gateway>>" as gateway
+participant "PetService" as petService
+participant "Pet DB" as petdb
+participant "ReviewService" as reviewservice
+participant "Review DB" as reviewdb
+ 
+user -> frontend ++: click random pet
+frontend -> gateway ++: request petService
+gateway -> petService ++: request random pet
+petService -> petdb ++: qurry random pet
+petdb --> petService:  return pets
+petService --> gateway:  return pets
+gateway --> frontend: return pets
+frontend --> user: show random pet
+user -> frontend: select a pet
+frontend -> gateway : request pet
+gateway -> petService : request request pet pet
+petService -> petdb : qurry pet
+petdb --> petService: return pet detail
+petService --> gateway : return pet detail
+gateway --> frontend : return pet detail
+frontend --> user : show pet
+
+user -> frontend : click read review massage
+frontend -> gateway: request review of that pet
+gateway -> reviewservice ++:request review of that pet
+reviewservice -> reviewdb ++: query review of that pet
+reviewdb --> reviewservice --: return review of that pet
+reviewservice --> gateway --: return review of that pet
+gateway --> frontend --: return review of that pet
+frontend --> user : return review of that pet
+
+@enduml

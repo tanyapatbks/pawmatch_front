@@ -1,4 +1,3 @@
-// src/app/libs/userRegister.ts
 import * as grpc from "@grpc/grpc-js";
 import * as protoLoader from "@grpc/proto-loader";
 import path from "path";
@@ -8,7 +7,8 @@ const PROTO_PATH = path.resolve(
   "src/app/libs/grpc/proto/auth.proto"
 );
 
-interface RegisterRequest {
+// Export interfaces
+export interface RegisterRequest {
   email: string;
   password: string;
   name: string;
@@ -19,7 +19,7 @@ interface RegisterRequest {
   profileImage?: Buffer;
 }
 
-interface RegisterResponse {
+export interface RegisterResponse {
   userId: string;
   token: string;
   message: string;
@@ -31,7 +31,7 @@ const packageDefinition = protoLoader.loadSync(PROTO_PATH, {
   enums: String,
   defaults: true,
   oneofs: true,
-  bytes: Buffer, // Add support for bytes type
+  bytes: Buffer,
 });
 
 const proto = (grpc.loadPackageDefinition(packageDefinition) as any).auth;
@@ -40,22 +40,34 @@ const client = new proto.AuthService(
   grpc.credentials.createInsecure()
 );
 
-export default async function userRegister(
-  userData: RegisterRequest
-): Promise<RegisterResponse> {
+export default async function userRegister(userData: RegisterRequest): Promise<RegisterResponse> {
   return new Promise((resolve, reject) => {
-    console.log("Attempting gRPC register:", { email: userData.email });
+    console.log("Calling gRPC Register with:", {
+      ...userData,
+      password: '[REDACTED]'
+    });
 
     client.Register(
       userData,
       (error: Error | null, response: RegisterResponse) => {
         if (error) {
           console.error("gRPC register error:", error);
-          reject(error);
+          // Convert gRPC error to regular Error
+          reject(new Error(error.message));
           return;
         }
 
-        console.log("gRPC register response:", response);
+        if (!response || !response.userId) {
+          console.error("Invalid response from gRPC:", response);
+          reject(new Error("Invalid response from registration service"));
+          return;
+        }
+
+        console.log("gRPC register success:", {
+          userId: response.userId,
+          hasToken: !!response.token
+        });
+
         resolve(response);
       }
     );

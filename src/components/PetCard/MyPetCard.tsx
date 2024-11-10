@@ -4,7 +4,6 @@ import Image from "next/image";
 import ButtonType1Small from "../Button/ButtonType1Small";
 import { useRouter } from "next/navigation";
 import deletePet from "@/libs/petService/deletePet";
-
 export default function MyPetCard({
     imageURL,
     name,
@@ -24,7 +23,7 @@ export default function MyPetCard({
     const handleDeletePet = async () => {
         await deletePet(petId);
     }
-
+   
     return (
 
         <div className="w-[250px] h-[300px] rounded-xl bg-white overflow-hidden text-rose-950 shadow-md">

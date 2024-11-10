@@ -6,6 +6,9 @@ import ButtonType2InputFunction from "@/components/Button/ButtonType2InputFuncti
 import { MdRateReview, MdSend } from "react-icons/md";
 import getPet from "@/libs/petService/getPet";
 import { PetFullDetailM2 } from "@/types";
+import sendMatch from "@/libs/matchService/sendMatch";
+import Link from "next/link";
+
 // import { MdSend } from "react-icons/md";
 
 interface petDetailData {
@@ -68,9 +71,11 @@ export default async function PetDetailPage({
   // let mockD = mockData.get(params.pid);
   let mockD = mockData.get("003");
   const petId = await params.pid;
+  // const petDetail: petDetailData = await getPet(petId);
+
   const petDetail: petDetailData = await getPet(petId);
+  console.log("petDetail:", petDetail);
   const petDetailD = await petDetail.data;
-  console.log(petDetailD);
 
   if (!petDetailD) {
     return (
@@ -82,8 +87,8 @@ export default async function PetDetailPage({
   }
   console.log("params.pid", params.pid);
   console.log(petDetailD);
-
-  let petImage = petDetailD.image;
+  //Data Clening
+  let petImage: string[] = await petDetailD.image;
   console.log(petImage);
   if (petImage.length === 0) {
     for (let i = 0; i < 3; i++) {
@@ -95,7 +100,11 @@ export default async function PetDetailPage({
       petImage.push("/img/default-pet-image.png");
     }
   }
-
+  // for (let i = 0; i < petImage.length; i++) {
+  //   console.log("picture ", i, ":", petImage[i]);
+  // }
+  let allimg = petImage.join("--------------------");
+  // console.log();
   // Function to determine the background color based on vaccination status
   const getVaccinationBgColor = (status: string) => {
     switch (status.toLowerCase()) {
@@ -122,10 +131,23 @@ export default async function PetDetailPage({
         return "Unknown"; // Fallback color if status is unknown
     }
   };
-
+  /*const sendRequest =async () => {
+    const data={
+      senderUserId: "1",
+      senderPetId:
+    }
+    const response = await sendMatch();
+    if (response.success) {
+      alert("Match request sent successfully");
+    } else {
+      alert("Match request failed");
+    }
+  };
+  }*/
   return (
     <div className="flex flex-col space-y-[64px] text-rose-950">
       {/* <div>{params.pid}</div> */}
+      {/* <div>allimg: {allimg}</div> */}
       <PageBar name="Pet Detail" />
       <div className="px-[64px] flex flex-row space-x-[64px]">
         <div className="object-contain rounded-[24px] overflow-hidden ring-[4px] ring-rose-200 ">
@@ -140,16 +162,17 @@ export default async function PetDetailPage({
             />
           )}
         </div>
-
-        <div className="flex flex-col space-y-[40px] py-[16px]">
-          <h2 className="text-[40px] font-bold">{petDetailD.petName}</h2>
-          <h2 className="text-[40px] font-semibold">Age: {petDetailD.age}</h2>
-          <h2 className="text-[40px] font-semibold">
-            Gender: {petDetailD.gender}
-          </h2>
-          <h2 className="text-[40px] font-semibold">
-            Species: {petDetailD.species}
-          </h2>
+        <div className="w-full flex flex-col justify-center">
+          <div className="flex flex-col space-y-[40px] py-[16px]">
+            <h2 className="text-[40px] font-bold">{petDetailD.petName}</h2>
+            <h2 className="text-[40px] font-semibold">Age: {petDetailD.age}</h2>
+            <h2 className="text-[40px] font-semibold">
+              Gender: {petDetailD.gender}
+            </h2>
+            <h2 className="text-[40px] font-semibold">
+              Species: {petDetailD.species}
+            </h2>
+          </div>
         </div>
       </div>
 
@@ -174,7 +197,7 @@ export default async function PetDetailPage({
       <div className="px-[64px] py-[32px] grid grid-cols-3 gap-y-[56px] gap-x-[56px]">
         {petDetailD.image.map((images: string) => (
           <div
-            key={images}
+            // key={images}
             className="w-[480px] h-[270px] object-contain rounded-[24px] overflow-hidden ring-[4px] ring-rose-200"
           >
             <Image
@@ -197,13 +220,14 @@ export default async function PetDetailPage({
         />
       </div>
       <div className="flex justify-center items-center">
-        <ButtonType2InputFunction
-          name="Send Request"
-          isShowLeft={false}
-          isShowRight={true}
-          iconRight={<MdSend />}
-          // onClick={void}
-        />
+        <Link href={`/pets/${params.pid}/request`}>
+          <ButtonType2InputFunction
+            name="Send Request"
+            isShowLeft={false}
+            isShowRight={true}
+            iconRight={<MdSend />}
+          />
+        </Link>
       </div>
     </div>
   );
