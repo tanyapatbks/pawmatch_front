@@ -6,24 +6,18 @@ import { IoDiceOutline } from "react-icons/io5";
 import { getSession } from "next-auth/react";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../api/auth/[...nextauth]/options";
+import getRandomPets from "@/libs/petService/getRandomPets";
+
 export default async function Home() {
-  const session = await getServerSession(authOptions);
-  console.log("session at home page", session);
-  // console.log("Access Token:", session?.accessToken);
-  const token = session?.accessToken;
-  console.log("token at home ", token);
+  
+  const initialPets = await getRandomPets();
+
   return (
-    <div className="flex flex-col space-y-[64px]">
+    <div className="flex flex-col space-y-[64px] pb-5">
       <PageBar name="Home" />
-      {token ? (
-        <div className="flex justify-center">
-          <Show3PetHome token={token} />
-        </div>
-      ) : (
-        <div className="flex justify-center">
-          <Show3PetHome />
-        </div>
-      )}
+      <div className="flex justify-center">
+        <Show3PetHome initialPets={initialPets} />
+      </div>
     </div>
   );
 }

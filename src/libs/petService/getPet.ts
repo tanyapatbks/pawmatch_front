@@ -1,5 +1,5 @@
 export default async function getPet(petId: string) {
-  console.log("fetching data");
+
   // console.log(
   //   `fetching pet ${petId} from ${process.env.NEXT_PUBLIC_PET_SERVICE}/pets/${petId}`
   // );

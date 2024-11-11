@@ -42,9 +42,9 @@ export default function PetCardHome({
             </h2>
             <h2 className=" text-[20px]  font-bold">Age: {age ? age : 0}</h2>
           </div>
-          <div className="h-[160px] overflow-y-scroll">
+          {/* <div className="h-[160px] overflow-y-scroll">
             <h2 className="font-normal ">{description}</h2>
-          </div>
+          </div> */}
         </div>
         <div className="flex justify-end">
           <ButtonType1

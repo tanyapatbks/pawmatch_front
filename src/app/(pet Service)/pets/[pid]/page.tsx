@@ -21,7 +21,7 @@ export default async function PetDetailPage({
 }: {
   params: { pid: string };
 }) {
-  console.log("=========================================");
+  // console.log("=========================================");
   const mockData = new Map();
   mockData.set("001", {
     name: "Tiger II",
@@ -74,7 +74,7 @@ export default async function PetDetailPage({
   // const petDetail: petDetailData = await getPet(petId);
 
   const petDetail: petDetailData = await getPet(petId);
-  console.log("petDetail:", petDetail);
+  // console.log("petDetail:", petDetail);
   const petDetailD = await petDetail.data;
 
   if (!petDetailD) {
@@ -85,11 +85,11 @@ export default async function PetDetailPage({
       </div>
     );
   }
-  console.log("params.pid", params.pid);
-  console.log(petDetailD);
+  // console.log("params.pid", params.pid);
+  // console.log(petDetailD);
   //Data Clening
   let petImage: string[] = await petDetailD.image;
-  console.log(petImage);
+  // console.log(petImage);
   if (petImage.length === 0) {
     for (let i = 0; i < 3; i++) {
       petImage.push("/img/default-pet-image.png");
