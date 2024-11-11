@@ -6,7 +6,11 @@ import getReviews from '@/libs/reviewService/getReviews';
 import createReview from '@/libs/reviewService/createReview';
 import deleteReview from '@/libs/reviewService/deleteReview';
 
-export default async function PetMatchReviewPage({ params }: { params: { pid: string } }) {
+export default async function PetMatchReviewPage({ 
+  params 
+}: { 
+  params: { uid: string; pid: string; } 
+}) {
   const { reviews, isMatched, canReview } = await getReviews(params.pid);
 
   if (!reviews) {
@@ -27,7 +31,7 @@ export default async function PetMatchReviewPage({ params }: { params: { pid: st
                 {review.isOwner && (
                   <div className="flex gap-2">
                     <Link 
-                      href={`/pets/${params.pid}/reviews/edit/${review.id}`}
+                      href={`/matchdetail/${params.uid}/${params.pid}/reviews/edit/${review.id}`}
                       className="p-2 text-blue-600 hover:bg-blue-50 rounded-full"
                     >
                       <MdEdit size={20} />

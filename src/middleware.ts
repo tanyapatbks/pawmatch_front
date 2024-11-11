@@ -12,7 +12,7 @@ const publicPaths = [
   '/_next',          // Next.js static files
   '/favicon.ico',    // Favicon
   '/images',         // รูปภาพ public
-  '/pets/:pid*/reviews',  // review ()
+  '/matchdetail/:uid/:pid/reviews',  // review ()
 ];
 
 // ฟังก์ชันตรวจสอบว่าเป็น public path หรือไม่

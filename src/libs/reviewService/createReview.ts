@@ -3,7 +3,7 @@
 import { cookies } from 'next/headers'
 import { revalidatePath } from 'next/cache'
 
-export default async function createReview(petId: string, content: string) {
+export default async function createReview(petId: string, content: string, uid: string) {
   const cookieStore = cookies();
 
   if (!cookieStore.has('user')) {
@@ -11,22 +11,6 @@ export default async function createReview(petId: string, content: string) {
   }
 
   const jwt = cookieStore.get('user')?.value;
-
-  // ตรวจสอบสถานะ match ก่อนสร้าง review
-  const matchResponse = await fetch(`${process.env.API_GATEWAY_URL}/matches/status/${petId}`, {
-    headers: {
-      authorization: `Bearer ${jwt}`
-    }
-  });
-
-  if (!matchResponse.ok) {
-    throw new Error("Failed to verify match status");
-  }
-
-  const { isMatched } = await matchResponse.json();
-  if (!isMatched) {
-    throw new Error("You can only review pets that you have matched with");
-  }
 
   const response = await fetch(`${process.env.API_GATEWAY_URL}/reviews`, {
     method: "POST",
@@ -36,7 +20,8 @@ export default async function createReview(petId: string, content: string) {
     },
     body: JSON.stringify({
       petId,
-      content
+      content,
+      uid
     }),
   });
 
@@ -44,5 +29,5 @@ export default async function createReview(petId: string, content: string) {
     throw new Error("Failed to Create Review");
   }
 
-  revalidatePath(`/pets/${petId}/reviews`, 'page')
+  revalidatePath(`/matchdetail/${uid}/${petId}/reviews`, 'page')
 }

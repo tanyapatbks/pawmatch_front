@@ -42,6 +42,11 @@ export default async function matchDetail(params: { params: { pid: string; uid: 
         <Link href={`/pets/${params.params.pid}`}>
           <button className="bg-rose-400 text-white px-4 py-2 rounded">Read Pet Full Details</button>
         </Link>
+        <Link href={`/matchdetail/${params.params.uid}/${params.params.pid}/reviews`}>
+        <button className="bg-rose-400 text-white px-4 py-2 rounded">
+          Reviews
+        </button>
+        </Link>
       </div>
       <div>
         <OwnerDetail user={userData} />

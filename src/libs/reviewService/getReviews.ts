@@ -1,4 +1,3 @@
-// src/libs/reviewService/getReviews.ts
 "use server"
 
 import { cookies } from 'next/headers'
@@ -15,15 +14,13 @@ interface Review {
 
 interface ReviewResponse {
   reviews: Review[];
-  isMatched: boolean;
   canReview: boolean;
 }
 
-export default async function getReviews(petId: string): Promise<ReviewResponse> {
+export default async function getReviews(petId: string, uid: string): Promise<ReviewResponse> {
   const cookieStore = cookies();
   const jwt = cookieStore.get('user')?.value;
 
-  // Fetch reviews (public data)
   const reviewsResponse = await fetch(`${process.env.API_GATEWAY_URL}/reviews/${petId}`, {
     cache: 'no-store'
   });
@@ -33,53 +30,24 @@ export default async function getReviews(petId: string): Promise<ReviewResponse>
   }
 
   const reviews: Review[] = await reviewsResponse.json();
+  const currentUserId = jwt ? /* get user id from jwt */ '' : null;
 
-  // ถ้าไม่มี token (ไม่ได้ login) จะดูได้อย่างเดียว
+  // ถ้าไม่มี token จะดูได้อย่างเดียว
   if (!jwt) {
     return {
       reviews,
-      isMatched: false,
       canReview: false
     };
   }
 
-  try {
-    // เช็คว่า matched หรือยัง
-    const matchResponse = await fetch(`${process.env.API_GATEWAY_URL}/matches/status/${petId}`, {
-      headers: {
-        authorization: `Bearer ${jwt}`
-      },
-      cache: 'no-store'
-    });
+  // เช็คว่าเคยรีวิวหรือยัง
+  const hasReviewed = reviews.some(review => review.userId === currentUserId);
 
-    if (!matchResponse.ok) {
-      return {
-        reviews,
-        isMatched: false,
-        canReview: false
-      };
-    }
-
-    const { isMatched, userId } = await matchResponse.json();
-
-    // เช็คว่าเคยรีวิวหรือยัง
-    const hasReviewed = reviews.some(review => review.userId === userId);
-
-    return {
-      reviews: reviews.map(review => ({
-        ...review,
-        isOwner: review.userId === userId
-      })),
-      isMatched,
-      canReview: isMatched && !hasReviewed
-    };
-
-  } catch (error) {
-    console.error('Error checking match status:', error);
-    return {
-      reviews,
-      isMatched: false,
-      canReview: false
-    };
-  }
+  return {
+    reviews: reviews.map(review => ({
+      ...review,
+      isOwner: review.userId === currentUserId
+    })),
+    canReview: !hasReviewed
+  };
 }
