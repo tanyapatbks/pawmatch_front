@@ -6,6 +6,7 @@ export default async function getUser(userId: string) {
     },
   });
   if (!response.ok) {
+    if (response.status == 404) throw new Error("User with the given userId does not exist");
     throw new Error("Failed to get user");
   }
   return await response.json();
