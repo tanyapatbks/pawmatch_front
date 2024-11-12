@@ -3,51 +3,35 @@
 import { cookies } from 'next/headers'
 
 interface Review {
-  id: string;
+  reviewId: string;   // ใช้ reviewId เป็นหลัก
   petId: string;
   userId: string;
   userName: string;
   content: string;
   createdAt: string;
-  isOwner: boolean;
 }
 
 interface ReviewResponse {
   reviews: Review[];
-  canReview: boolean;
 }
 
 export default async function getReviews(petId: string, uid: string): Promise<ReviewResponse> {
-  const cookieStore = cookies();
-  const jwt = cookieStore.get('user')?.value;
+  try {
+    const API_URL = process.env.NEXT_PUBLIC_REVIEW_SERVICE || 'http://localhost:5001/api';
+    
+    const response = await fetch(`${API_URL}/reviews/${petId}`, {
+      cache: 'no-store'
+    });
 
-  const reviewsResponse = await fetch(`${process.env.API_GATEWAY_URL}/reviews/${petId}`, {
-    cache: 'no-store'
-  });
+    if (!response.ok) {
+      throw new Error('Failed to fetch reviews');
+    }
 
-  if (!reviewsResponse.ok) {
-    throw new Error("Failed to fetch reviews");
+    const reviews = await response.json();
+    return { reviews };
+
+  } catch (error) {
+    console.error('Error in getReviews:', error);
+    return { reviews: [] };
   }
-
-  const reviews: Review[] = await reviewsResponse.json();
-  const currentUserId = jwt ? /* get user id from jwt */ '' : null;
-
-  // ถ้าไม่มี token จะดูได้อย่างเดียว
-  if (!jwt) {
-    return {
-      reviews,
-      canReview: false
-    };
-  }
-
-  // เช็คว่าเคยรีวิวหรือยัง
-  const hasReviewed = reviews.some(review => review.userId === currentUserId);
-
-  return {
-    reviews: reviews.map(review => ({
-      ...review,
-      isOwner: review.userId === currentUserId
-    })),
-    canReview: !hasReviewed
-  };
 }
